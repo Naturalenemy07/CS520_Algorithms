@@ -1,3 +1,9 @@
+// John Caruthers
+// CS520 Algorithms, Spring 2023
+// Hood College 
+// 07Feb23
+// Homework 1
+
 #include <iostream>
 #include <stack>
 #include <string>
@@ -14,12 +20,18 @@ int main() {
     int input_length = math_exp.size();
 
     // Initialize tempnum for pushing an integer to value_stack
+    // tempnumStr is to hold integers of multiple places
     int tempnum;
+    std::string tempnumStr;
 
     // Iterate through math_exp, pushing to approprate stack
     for (int i = 0; i < input_length; i++) {
         // If statment detects if an integer, saves as integer to tempnum, pushes to value stack if true
         if (math_exp[i] >= '0' && math_exp[i] <= '9') {
+            if (tempnumStr.size() > 0) {
+                tempnumStr.append(math_exp[i]);
+            }
+            tempnumStr = math_exp[i];
             tempnum = math_exp[i] - '0';
             value_stack.push(tempnum);
 
