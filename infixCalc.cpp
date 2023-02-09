@@ -4,6 +4,12 @@
 // 07Feb23
 // Homework 1
 
+// John Caruthers
+// CS520 Algorithms, Spring 2023
+// Hood College 
+// 07Feb23
+// Homework 1
+
 #include <iostream>
 #include <stack>
 #include <string>
@@ -26,21 +32,28 @@ int main() {
 
     // Iterate through math_exp, pushing to approprate stack
     for (int i = 0; i < input_length; i++) {
-        // If statment detects if an integer, saves as integer to tempnum, pushes to value stack if true
+        // If statement detects if nummber, if so, adds to temp string until hits operand or right parenthesis
         if (math_exp[i] >= '0' && math_exp[i] <= '9') {
-            if (tempnumStr.size() > 0) {
-                tempnumStr.append(math_exp[i]);
-            }
-            tempnumStr = math_exp[i];
-            tempnum = math_exp[i] - '0';
-            value_stack.push(tempnum);
+            tempnumStr.push_back(math_exp[i]);
 
         // First else if detects if an operand, pushes to operand stack if true
         } else if (math_exp[i] == '+' || math_exp[i] == '-' || math_exp[i] == '*' || math_exp[i] == '/' || math_exp[i] == '%') {
+            // convert temp num string to integer and push to stack (once verified no more numbers)
+            tempnum = stoi(tempnumStr);
+            tempnumStr = "";
+            value_stack.push(tempnum);
+            // Bug identified with trying to stoi("") - need to make if statement to check for that
+
+            // push operand to stack
             operand_stack.push(math_exp[i]);
 
         // Last conditional detects if a right parenthesis, pops items, performs calculations, pushes result to value stack
         } else if (math_exp[i] == ')') {
+            // convert temp num string to integer and push to stack (once verified no more numbers)
+            tempnum = stoi(tempnumStr);
+            tempnumStr = "";
+            value_stack.push(tempnum);
+
             // gets and pops items
             int value1 = value_stack.top();
             value_stack.pop();
