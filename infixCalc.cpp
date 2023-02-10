@@ -1,10 +1,4 @@
-// John Caruthers
-// CS520 Algorithms, Spring 2023
-// Hood College 
-// 07Feb23
-// Homework 1
-
-// John Caruthers
+/// John Caruthers
 // CS520 Algorithms, Spring 2023
 // Hood College 
 // 07Feb23
@@ -39,10 +33,11 @@ int main() {
         // First else if detects if an operand, pushes to operand stack if true
         } else if (math_exp[i] == '+' || math_exp[i] == '-' || math_exp[i] == '*' || math_exp[i] == '/' || math_exp[i] == '%') {
             // convert temp num string to integer and push to stack (once verified no more numbers)
-            tempnum = stoi(tempnumStr);
-            tempnumStr = "";
-            value_stack.push(tempnum);
-            // Bug identified with trying to stoi("") - need to make if statement to check for that
+            if (tempnumStr != "") {
+                tempnum = std::stoi(tempnumStr);
+                tempnumStr = "";
+                value_stack.push(tempnum);
+            }
 
             // push operand to stack
             operand_stack.push(math_exp[i]);
@@ -50,9 +45,11 @@ int main() {
         // Last conditional detects if a right parenthesis, pops items, performs calculations, pushes result to value stack
         } else if (math_exp[i] == ')') {
             // convert temp num string to integer and push to stack (once verified no more numbers)
-            tempnum = stoi(tempnumStr);
-            tempnumStr = "";
-            value_stack.push(tempnum);
+            if (tempnumStr != "") {
+                tempnum = std::stoi(tempnumStr);
+                tempnumStr = "";
+                value_stack.push(tempnum);
+            }
 
             // gets and pops items
             int value1 = value_stack.top();
