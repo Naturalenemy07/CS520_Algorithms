@@ -1,7 +1,7 @@
 // John Caruthers
 // CS520 Algorithms, Spring 2023
 // Hood College 
-// 07Feb23
+// 12Feb23
 // Homework 1
 
 #include <iostream>
@@ -75,14 +75,14 @@ int main() {
             // Add to operant counter
             oper++;
 
-            // convert temp num string to integer and push to stack (once verified no more numbers)
+            // Convert temp num string to integer and push to stack (once verified no more numbers)
             if (tempnumStr != "") {
                 tempnum = std::stof(tempnumStr);
                 tempnumStr = "";
                 value_stack.push(tempnum);
             }
 
-            // push operand to stack
+            // Push operand to stack
             operand_stack.push(math_exp[i]);
 
         // Last conditional detects if a right parenthesis, pops items, performs calculations, pushes result to value stack
@@ -90,16 +90,14 @@ int main() {
             // add to rpar
             rpar++;
 
-            // checker(lpar, rpar, oper);
-
-            // convert temp num string to integer and push to stack (once verified no more numbers)
+            // Convert temp num string to integer and push to stack (once verified no more numbers)
             if (tempnumStr != "") {
                 tempnum = std::stof(tempnumStr);
                 tempnumStr = "";
                 value_stack.push(tempnum);
             }
 
-            // detects if there areat least two values
+            // Detects if there areat least two values
             if (value_stack.size() < 2) {
                 std::cout << "INPUT ERROR: A ')' has been used with no values, or only one value, please verify expression is correct." << std::endl;
                 return 3;
@@ -111,7 +109,7 @@ int main() {
             }
 
 
-            // gets and pops items
+            // Gets and pops items
             float value1 = value_stack.top();
             value_stack.pop();
             float char1 = operand_stack.top();
@@ -119,7 +117,7 @@ int main() {
             float value2 = value_stack.top();
             value_stack.pop();
 
-            // performs calculations
+            // Performs calculations
             if (char1 == '+') {
                 value2 += value1;
             } else if (char1 == '-') {
@@ -130,19 +128,20 @@ int main() {
                 value2 /= value1;
             }
 
-            // push new value to value_stack
+            // Push new value to value_stack
             value_stack.push(value2);
 
         } else if (math_exp[i] == '(') {
             lpar++;
 
-        // detects illegal characters
+        // Detects illegal characters
         } else {
             std::cout << "INPUT ERROR: '" << math_exp[i] << "'" << " is not a valid character, please verify expression is correct." << std::endl;
             return 3;
         }
     }
 
+    // Performs final checks, if good will print result, if not, will return error.
     if (checker(lpar, rpar, oper)) {
         // Once iterated through entire math_exp, print out result
         std::cout << "Result of expression: " << value_stack.top() << std::endl;
@@ -151,5 +150,4 @@ int main() {
         return 3;
     }
 
-    
 }
