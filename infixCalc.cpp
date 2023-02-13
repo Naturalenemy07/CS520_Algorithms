@@ -1,30 +1,26 @@
 // John Caruthers
-// CS520 Algorithms, Spring 2023
-// Hood College 
 // 12Feb23
-// Homework 1
+// Hood College 
+// CS520 Algorithms, Spring 2023
+// Assignment 1
 
 #include <iostream>
 #include <stack>
 #include <string>
 
 bool checker(int numlp, int numrp, int numop) {
-    //counter
+    //counter to determine return value
     int counter = 0;
 
+    // Compares number of parenthesis type and operands
     if (numrp > numlp && numrp > numop) {
         std::cout << "INPUT ERROR: Please use infix format, verify that parenthesis are correctly oriented" << std::endl;
         counter++;
     }
 
-    // check for presence of operands
+    // Check for presence of operands
     if (numop == 0) {
         std::cout << "INPUT ERROR: No operands detected, please verify expression is correctly inputted in infix format." << std::endl;
-        counter++;
-    }
-
-    if (numop > numrp) {
-        std::cout << "INPUT ERROR: There are either too many operands or not enough ')', please verify expression is correctly inputted in infix format." << std::endl;
         counter++;
     }
 
@@ -39,7 +35,6 @@ bool checker(int numlp, int numrp, int numop) {
     } else {
         return true;
     }
-
 }
 
 int main() {
@@ -58,8 +53,8 @@ int main() {
     int rpar = 0;
     int oper = 0;
 
-    // Initialize tempnum for pushing an integer to value_stack
-    // tempnumStr is to hold integers of multiple places
+    // Initialize tempnum for pushing a float to value_stack
+    // tempnumStr is to hold floats of multiple places temporarily as a string
     float tempnum;
     std::string tempnumStr;
 
@@ -97,17 +92,11 @@ int main() {
                 value_stack.push(tempnum);
             }
 
-            // Detects if there areat least two values
-            if (value_stack.size() < 2) {
-                std::cout << "INPUT ERROR: A ')' has been used with no values, or only one value, please verify expression is correct." << std::endl;
+            // Verifies that an operand exists, and that there are at least two values prior to performing calculations
+            if (operand_stack.size() == 0 || value_stack.size() < 2) {
+                std::cout << "INPUT ERROR: There are no operands or not enough values to perform calculations compared to the number of right parenthesis, verify input is correctly in infix format" << std::endl;
                 return 3;
             }
-
-            if (operand_stack.size() == 0) {
-                std::cout << "INPUT ERROR: A ')' has been used with no operand, please verify expression is correct." << std::endl;
-                return 3;
-            }
-
 
             // Gets and pops items
             float value1 = value_stack.top();
@@ -131,6 +120,7 @@ int main() {
             // Push new value to value_stack
             value_stack.push(value2);
 
+        // Count left parenthesis for error checking
         } else if (math_exp[i] == '(') {
             lpar++;
 
@@ -143,11 +133,9 @@ int main() {
 
     // Performs final checks, if good will print result, if not, will return error.
     if (checker(lpar, rpar, oper)) {
-        // Once iterated through entire math_exp, print out result
         std::cout << "Result of expression: " << value_stack.top() << std::endl;
         return 0;
     } else {
         return 3;
     }
-
 }
