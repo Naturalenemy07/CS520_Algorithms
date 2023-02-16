@@ -1,23 +1,36 @@
 #include <iostream>
 #include <chrono>
 
-//set variables (n) number of ints, (range), and (m) number of ints to search within n
 
-// generate (n) integers and save to an array (n_ints)
+int main() {
+    //set variables (data_size) is number of ints, (range), and (m_ints) sample size
+    int data_size;
+    int d_range;
+    int m_ints;
 
-// sort list of (n) integers
+    std::cout << "Enter data size: ";
+    std::cin >> data_size;
+    std::cout <<"Enter sample size: ";
+    std::cin >> m_ints;
+    d_range = 10*data_size;
 
-// generate list of (m) integers to be searched and save to seperate array (m_ints)
+    // generate (n) integers and save to an array (n_ints)
+    
 
-// create array (linear_search_times, and binary_search_times) to store all search times, initialize (lin_num_found, and bin_num_found) to store numebr of integers found
+    // sort list of (n) integers
 
-// for each number in M_ints, search using linear search method
-// // keep track of time to perform search using <chrono>, save the time (in milliseconds) to (search_times)
+    // generate list of (m) integers to be searched and save to seperate array (m_ints)
 
-// for each number in M_ints, search using binary search method
-// // keep track of time to perform search using <chrono>, save the time (in milliseconds) to (search_times)
+    // create array (linear_search_times, and binary_search_times) to store all search times, initialize (lin_num_found, and bin_num_found) to store numebr of integers found
 
-// once completed, calculate average time to seach
+    // for each number in M_ints, search using linear search method
+    // // keep track of time to perform search using <chrono>, save the time (in milliseconds) to (search_times)
 
-// print out (n), (m), number found and average time spent searching for each ex: 
-// (n): 100, (m): 50, (num found): #, (linear avg time): # secs, (binary avg time): # secs
+    // for each number in M_ints, search using binary search method
+    // // keep track of time to perform search using <chrono>, save the time (in milliseconds) to (search_times)
+
+    // once completed, calculate average time to seach
+
+    // print out (n), (m), number found and average time spent searching for each ex: 
+    // (n): 100, (m): 50, (num found): #, (linear avg time): # secs, (binary avg time): # secs
+}
