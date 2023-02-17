@@ -4,8 +4,15 @@
 #include <cstdlib>
 #include <algorithm>
 
-int linear_search( int arr[]) {
-    return 0;
+int linear_search( int arr[], int item, int size) {
+    // start time
+
+    //search
+    for (int dummy_k = 0; dummy_k < size; dummy_k++) {
+        return 0;
+    }
+
+    //end time
 }
 
 int main() {
