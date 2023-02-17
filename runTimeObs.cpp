@@ -4,6 +4,9 @@
 #include <cstdlib>
 #include <algorithm>
 
+int linear_search( int arr[]) {
+    return 0;
+}
 
 int main() {
     // Set (data_size) is number of ints in dataset, (range) is the range of that dataset, and (m_ints) is the sample size
@@ -42,8 +45,6 @@ int main() {
     for (int dummy_m = 0; dummy_m < data_size; dummy_m++) {
         sample_array[dummy_m] = (std::rand() % d_range);
     }
-
-    // create array (linear_search_times, and binary_search_times) to store all search times, initialize (lin_num_found, and bin_num_found) to store numebr of integers found
 
     // for each number in M_ints, search using linear search method
     // // keep track of time to perform search using <chrono>, save the time (in milliseconds) to (search_times)
