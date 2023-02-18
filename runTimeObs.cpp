@@ -3,17 +3,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <algorithm>
-
-int linear_search( int arr[], int item, int size) {
-    // start time
-
-    //search
-    for (int dummy_k = 0; dummy_k < size; dummy_k++) {
-        return 0;
-    }
-
-    //end time
-}
+#include <string>
 
 int main() {
     // Set (data_size) is number of ints in dataset, (range) is the range of that dataset, and (m_ints) is the sample size
@@ -30,7 +20,7 @@ int main() {
 
     // Create empty static array of size (data_size) to hold entire dataset, 
     // and empty static array to hold integers that will be searched for in the dataset (sample_array)
-    int data_array[data_size];
+    int data_array[data_size]; // actually a pointer to the data array std::cout returns memory address.
     int sample_array[m_ints];
 
     // create array (linear_search_times, and binary_search_times) to store all search times, initialize (lin_num_found, and bin_num_found)
@@ -44,17 +34,52 @@ int main() {
     for (int dummy_n = 0; dummy_n < data_size; dummy_n++) {
         data_array[dummy_n] = (std::rand() % d_range);
     }
-
+ 
     // sort list of (n) integers
     std::sort(data_array,data_array + data_size);
 
-    // generate list of (m) integers to be searched and save to seperate array (m_ints)
-    for (int dummy_m = 0; dummy_m < data_size; dummy_m++) {
+    // generate list of (m) integers to be searched and save to separate array (m_ints)
+    for (int dummy_m = 0; dummy_m < m_ints; dummy_m++) {
         sample_array[dummy_m] = (std::rand() % d_range);
     }
 
-    // for each number in M_ints, search using linear search method
-    // // keep track of time to perform search using <chrono>, save the time (in milliseconds) to (search_times)
+    ///////////////////////
+    /////Linear Search/////
+    ///////////////////////
+
+    for (int dummy_j = 0; dummy_j < m_ints; dummy_j++) {
+        bool found_status;
+        double search_time;
+
+        // start time
+        auto start = std::chrono::system_clock::now();
+
+        //search
+        for (int dummy_k = 0; dummy_k < data_size; dummy_k++) {
+            if (sample_array[dummy_j] == data_array[dummy_k]) {
+                
+                found_status = true;
+
+                //end time once found, get search time
+                auto end = std::chrono::system_clock::now();
+                std::chrono::duration<double> diff = end - start;
+                search_time = diff.count();
+                std::cout << "It took: " << search_time << " milliseconds to find." << std::endl;
+
+                break;
+            }
+        }
+
+        // Set status since interated through entire data_array and didnt find sample
+        found_status = false;
+
+        // End time
+        auto end = std::chrono::system_clock::now();
+        std::chrono::duration<double> diff = end - start;
+        search_time = diff.count();
+        std::cout << "It took: " << search_time << " milliseconds, and it was not found." << std::endl;
+
+    }
 
     // for each number in M_ints, search using binary search method
     // // keep track of time to perform search using <chrono>, save the time (in milliseconds) to (search_times)
