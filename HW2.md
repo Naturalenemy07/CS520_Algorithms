@@ -26,7 +26,7 @@ And then the sample size (m):
 ```bash
 Enter sample size:
 ```
-Once you input the data size and sample size, the program will print out the results, including the average search time for linear and binary search methods as well as the number of sampels found.  For example, on my computer, with a data size of 10000 and a sample size of 1000 were entered: 
+Once you input the data size and sample size, the program will print out the results.  The results include the average search time for linear and binary search methods, and the number of samples found.  For example, on my computer, with a data size of 10000 and a sample size of 1000 were entered: 
 ```bash
 Enter data size: 10000
 Enter sample size: 1000
