@@ -97,6 +97,8 @@ int main() {
     std::cout << "\nWith a data size of: " << data_size << ", and a sample size of: " << m_ints << std::endl;
     std::cout << "Average linear search time was: " << average_linear_search * 1000  << " milliseconds." << std::endl;
     std::cout << "The number of samples found were: " << linear_found << "\n" << std::endl;
+    int linear_data = sizeof(data_size) + sizeof(m_ints) + sizeof(average_linear_search) + sizeof(linear_found) + sizeof(linear_search_times)+ sizeof(sample_array_v) + sizeof(data_array_v);
+    std::cout << "data used for linear: " << linear_data << " bytes"<< std::endl;
 
     ///////////////////////
     /////Binary Search/////
@@ -150,4 +152,6 @@ int main() {
     std::cout << "\nWith a data size of: " << data_size << ", and a sample size of: " << m_ints << std::endl;
     std::cout << "Average binary search time was: " << average_binary_search * 1000  << " milliseconds." << std::endl;
     std::cout << "The number of samples found were: " << binary_found << "\n" << std::endl;
+    int binary_data = sizeof(data_size) + sizeof(m_ints) + sizeof(average_binary_search) + sizeof(binary_found) + sizeof(binary_search_times)+ sizeof(sample_array_v) + sizeof(data_array_v);
+    std::cout << "data used for binary: " << binary_data << " bytes"<< std::endl;
 }
