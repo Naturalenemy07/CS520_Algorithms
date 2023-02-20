@@ -1,4 +1,4 @@
-# runTimeObs.cpp 
+# About runTimeObs.cpp 
 
 The program (runTimeObs.cpp) is used to demonstrate the runtime of the linear and binary search algorithms at progressively larger data inputs. It shows that a linear search algorithm has an exponential complexity, while the binary search algorithm is linearithmic in complexity.
 
