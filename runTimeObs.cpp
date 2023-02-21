@@ -5,21 +5,20 @@
 // Assignment 2
 
 #include <iostream>
-#include <array>
 #include <chrono>
 #include <cstdlib>
 #include <algorithm>
-#include <string>
 #include <cmath>
-#include <vector> // using vector since will handle large arrays
+#include <vector>
 
 int main() {
-    // Set (data_size) is number of ints in dataset, (range) is the range of that dataset, and (m_ints) is the sample size
+    // Set (data_size) is number of ints in dataset, (range) is the range of that dataset, 
+    // and (m_ints) is the sample size.
     int data_size;
     int d_range;
     int m_ints;
 
-    // Get user input on dataset size and sample size
+    // Get user input on dataset size and sample size, range is 10x data size to minimize repeats.
     std::cout << "Enter data size: ";
     std::cin >> data_size;
     std::cout <<"Enter sample size: ";
@@ -27,31 +26,32 @@ int main() {
     d_range = 10*data_size;
 
     // Create empty static array of size (data_size) to hold entire dataset, 
-    // and empty static array to hold integers that will be searched for in the dataset (sample_array)
+    // and empty static array to hold integers that will be searched for in the dataset (sample_array).
     std::vector<int> data_array_v;
     std::vector<int> sample_array_v;
 
-    // create array (linear_search_times, and binary_search_times) to store all search times, initialize (lin_num_found, and bin_num_found)
+    // Create array (linear_search_times, and binary_search_times) to store all search times, 
+    // initialize (lin_num_found, and bin_num_found)
     std::vector<float> linear_search_times;
     std::vector<float> binary_search_times;
     int linear_found = 0;
     int binary_found = 0;
 
-    // randomly generate (data_size) integers and save to array (data_array)
-    // use of std::rand() is fine for this not serious purpose, and the range is 10x the data_size, to minimize prob of repeats
+    // Randomly generate (data_size) integers and save to array (data_array)
+    // use of std::rand() is fine for not serious purpose such as this homework.
     for (int dummy_n = 0; dummy_n < data_size; dummy_n++) {
         data_array_v.push_back(std::rand() % d_range);
     }
  
-    // sort list of (n) integers
+    // Sort list of (n) integers.
     std::sort(data_array_v.begin(), data_array_v.end());
 
-    // generate list of (m) integers to be searched and save to separate array (m_ints)
+    // Generate list of (m) integers to be searched and save to separate array (m_ints).
     for (int dummy_m = 0; dummy_m < m_ints; dummy_m++) {
         sample_array_v.push_back(std::rand() % d_range);
     }
 
-    // Initiate space allocation
+    // Initiate space allocation.
     float linear_space = sizeof(data_size);
     linear_space += sizeof(d_range);
     linear_space += sizeof(m_ints);
@@ -60,43 +60,44 @@ int main() {
     linear_space += sizeof(linear_found);
     float binary_space = linear_space - sizeof(linear_found) + sizeof(binary_found);
 
-    // ///////////////////////
-    // /////Linear Search/////
-    // ///////////////////////
+    ///////////////////////
+    /////Linear Search/////
+    ///////////////////////
 
-    // Iterate through sample vector
+    // Iterate through sample vector.
     for (int dummy_j = 0; dummy_j < m_ints; dummy_j++) {
 
-        // Start time
+        // Start time.
         auto start = std::chrono::high_resolution_clock::now();
 
-        // Search
+        // Search Linear Method.
         for (int dummy_k = 0; dummy_k < data_size; dummy_k++) {
             if (sample_array_v[dummy_j] == data_array_v[dummy_k]) {
-                //End time if found, get search time, increase linear found
+                // End time if found, get search time, increase linear found.
                 auto end = std::chrono::high_resolution_clock::now();
                 std::chrono::duration<float> duration = end - start;
                 linear_found++;
 
-                // Push search time to array, go to next sample item
+                // Push search time to array, go to next sample item.
                 linear_search_times.push_back(duration.count());
                 break;
             }
         }
 
-        // End time if not found, get search time
+        // End time if not found, get search time.
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<float> duration = end - start;
         
-        // Push search time to array, go to next sample item
+        // Push search time to array, go to next sample item.
         linear_search_times.push_back(duration.count());
     }
 
-    // Calculate average search time. need to iterate through search times, 
+    // Calculate average search time.
     float average_linear_search = 0;
     for (int dummy_s = 0; dummy_s < m_ints; dummy_s++) {
         average_linear_search += linear_search_times[dummy_s];
     }
+    average_linear_search /= m_ints;
 
     // Update space allocation for linear space
     linear_space += sizeof(average_linear_search);
@@ -155,6 +156,7 @@ int main() {
     for (int dummy_s = 0; dummy_s < m_ints; dummy_s++) {
         average_binary_search += binary_search_times[dummy_s];
     }
+    average_binary_search /= m_ints;
 
         // Update space allocation for linear space
     binary_space += sizeof(average_binary_search);
