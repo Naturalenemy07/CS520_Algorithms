@@ -12,7 +12,6 @@ int main() {
     int data_size;
     int d_range;
     int m_ints;
-    // std::cout << "Completed  consts" << std::endl;
 
     // Get user input on dataset size and sample size
     std::cout << "Enter data size: ";
@@ -20,22 +19,17 @@ int main() {
     std::cout <<"Enter sample size: ";
     std::cin >> m_ints;
     d_range = 10*data_size;
-    // std::cout << "Completed inputs" << std::endl;
 
     // Create empty static array of size (data_size) to hold entire dataset, 
     // and empty static array to hold integers that will be searched for in the dataset (sample_array)
     std::vector<int> data_array_v;
     std::vector<int> sample_array_v;
-    // std::cout << "Completed vectors" << std::endl;
-    // int data_array[data_size];
-    // int sample_array[m_ints];
 
     // create array (linear_search_times, and binary_search_times) to store all search times, initialize (lin_num_found, and bin_num_found)
     std::vector<float> linear_search_times;
     std::vector<float> binary_search_times;
     int linear_found = 0;
     int binary_found = 0;
-    // std::cout << "Completed search vectors" << std::endl;
 
     // randomly generate (data_size) integers and save to array (data_array)
     // use of std::rand() is fine for this not serious purpose, and the range is 10x the data_size, to minimize prob of repeats
@@ -44,15 +38,21 @@ int main() {
     }
  
     // sort list of (n) integers
-    // std::cout << "Initiating sorting!" << std::endl;
     std::sort(data_array_v.begin(), data_array_v.end());
-    // std::cout << "Sorting completed!" << std::endl;
 
     // generate list of (m) integers to be searched and save to separate array (m_ints)
     for (int dummy_m = 0; dummy_m < m_ints; dummy_m++) {
         sample_array_v.push_back(std::rand() % d_range);
-        // std::cout << "generated sample int: " << dummy_m << std::endl;
     }
+
+    // Initiate space allocation
+    float linear_space = sizeof(data_size);
+    linear_space += sizeof(d_range);
+    linear_space += sizeof(m_ints);
+    linear_space += data_array_v.size() * sizeof(int);
+    linear_space += sample_array_v.size() * sizeof(int);
+    linear_space += sizeof(linear_found);
+    float binary_space = linear_space - sizeof(linear_found) + sizeof(binary_found);
 
     // ///////////////////////
     // /////Linear Search/////
@@ -60,7 +60,6 @@ int main() {
 
     // Iterate through sample vector
     for (int dummy_j = 0; dummy_j < m_ints; dummy_j++) {
-        // std::cout << "Linearly searching for " << dummy_j +1 << "/" << m_ints << std::endl;
 
         // Start time
         auto start = std::chrono::high_resolution_clock::now();
@@ -93,12 +92,15 @@ int main() {
         average_linear_search += linear_search_times[dummy_s];
     }
 
+    // Update space allocation for linear space
+    linear_space += sizeof(average_linear_search);
+    linear_space += linear_search_times.size() * sizeof(float);
+
     // Print out results
     std::cout << "\nWith a data size of: " << data_size << ", and a sample size of: " << m_ints << std::endl;
     std::cout << "Average linear search time was: " << average_linear_search * 1000  << " milliseconds." << std::endl;
-    std::cout << "The number of samples found were: " << linear_found << "\n" << std::endl;
-    int linear_data = sizeof(data_size) + sizeof(m_ints) + sizeof(average_linear_search) + sizeof(linear_found) + sizeof(linear_search_times)+ sizeof(sample_array_v) + sizeof(data_array_v);
-    std::cout << "data used for linear: " << linear_data << " bytes"<< std::endl;
+    std::cout << "The number of samples found were: " << linear_found << std::endl;
+    std::cout << "Space used for linear search is: " << linear_space /1000 << " kilobytes." << "\n" << std::endl;
 
     ///////////////////////
     /////Binary Search/////
@@ -148,10 +150,13 @@ int main() {
         average_binary_search += binary_search_times[dummy_s];
     }
 
+        // Update space allocation for linear space
+    binary_space += sizeof(average_binary_search);
+    binary_space += binary_search_times.size() * sizeof(float);
+
     // Print out results
     std::cout << "\nWith a data size of: " << data_size << ", and a sample size of: " << m_ints << std::endl;
     std::cout << "Average binary search time was: " << average_binary_search * 1000  << " milliseconds." << std::endl;
-    std::cout << "The number of samples found were: " << binary_found << "\n" << std::endl;
-    int binary_data = sizeof(data_size) + sizeof(m_ints) + sizeof(average_binary_search) + sizeof(binary_found) + sizeof(binary_search_times)+ sizeof(sample_array_v) + sizeof(data_array_v);
-    std::cout << "data used for binary: " << binary_data << " bytes"<< std::endl;
+    std::cout << "The number of samples found were: " << binary_found << std::endl;
+    std::cout << "Space used for binary search is: " << binary_space / 1000<< " kilobytes." << "\n" << std::endl;
 }
