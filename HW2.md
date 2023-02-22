@@ -34,9 +34,11 @@ Enter sample size: 1000
 With a data size of: 10000, and a sample size of: 1000
 Average linear search time was: 22.6982 milliseconds.
 The number of samples found were: 262
+Space used for linear search is: 49.068 kilobytes
 
 
 With a data size of: 10000, and a sample size of: 1000
 Average binary search time was: 0.169001 milliseconds.
 The number of samples found were: 262
+Space used for binary search is: 48.02 kilobytes
 ```
