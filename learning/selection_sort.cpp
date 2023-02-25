@@ -1,34 +1,32 @@
-#include<iostream>
+#include <iostream>
 
+int main() 
+{
+    int arr[] = {6,1,5,3,1};
+    int len = 5;
+    int min = 0;
 
-int array_to_sort[10];
+    for (int i = 0; i < len-1; i++) {
+        min = i;
+        int j = i;
+        while (j < len-1) {
+            j++;
+            if (arr[j] < arr[min]) {
+                min = j;
+            } 
+        }
+        if (min != i) {
+            int temp = arr[i];
+            arr[i] = arr[min];
+            arr[min] = temp;
+        }
 
-void print_array(int length) {
-     std::cout << "Input Array: [";
-     for (int i = 0; i < length - 1; i++) {
-        std::cout << array_to_sort[i] << " ";
-     }
-     std::cout << array_to_sort[length];
-     std::cout << "]" << std::endl;
-}
-
-void selection_sort() {
-    
-}
-
-int main() {
-    int len;
-    // get user input
-    std::cout << "Length: ";
-    std::cin >> len;
-
-    // create array
-    for (int i = 0; i < len; i++) {
-        array_to_sort[i] = rand() % 100;
     }
 
-    // print input array
-    print_array(len);
+    for (int k = 0; k < len; k++) {
+        std::cout << arr[k] << " ";
+    }
 
-    // perform selection sort
+    return 0;
+
 }
