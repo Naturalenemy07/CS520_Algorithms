@@ -1,32 +1,51 @@
-#include <iostream>
+#include<iostream>
 
-int main() 
-{
-    int arr[] = {6,1,5,3,1};
-    int len = 5;
+int main() {
+    // get user input
+    int len;
+    std::cout << "Length: ";
+    std::cin >> len;
+    int array_to_sort[len];
+
+    // create array
+    for (int i = 0; i < len; i++) {
+        array_to_sort[i] = rand() % (len * 10);
+        std::cout << array_to_sort[i] << std::endl;
+    }
+
+    // print input array
+    std::cout << "[";
+     for (int i = 0; i < len; i++) {
+        std::cout << array_to_sort[i] << " ";
+     }
+     std::cout << "]" << std::endl;
+
+    // perform selection sort
     int min = 0;
 
-    for (int i = 0; i < len-1; i++) {
+    for (int i = 0; i < len; i++) {
         min = i;
         int j = i;
         while (j < len-1) {
             j++;
-            if (arr[j] < arr[min]) {
+            if (array_to_sort[j] < array_to_sort[min]) {
                 min = j;
             } 
         }
         if (min != i) {
-            int temp = arr[i];
-            arr[i] = arr[min];
-            arr[min] = temp;
+            int temp = array_to_sort[i];
+            array_to_sort[i] = array_to_sort[min];
+            array_to_sort[min] = temp;
         }
-
     }
 
-    for (int k = 0; k < len; k++) {
-        std::cout << arr[k] << " ";
-    }
+    // print result after selection sort
+    std::cout << "\nAfter selection sort" << std::endl;
 
-    return 0;
-
+    // print input array
+    std::cout << "[";
+     for (int i = 0; i < len; i++) {
+        std::cout << array_to_sort[i] << " ";
+     }
+     std::cout << "]" << std::endl;
 }
