@@ -10,7 +10,6 @@ int main() {
     // create array
     for (int i = 0; i < len; i++) {
         array_to_sort[i] = rand() % (len * 10);
-        std::cout << array_to_sort[i] << std::endl;
     }
 
     // print input array
