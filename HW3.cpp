@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <chrono>
+#include <cstring>
 
 bool confirmSorted(std::vector<int>& array_input, int len_input) {
     int sort_counter = 0;
@@ -40,6 +41,7 @@ void selectionSort(std::vector<int>& array_input, int len_input) {
 }
 
 void insertionSort(std::vector<int>& array_input, int len_input) {
+    std::cout << "Initiating Insertion Sorting" << std::endl;
     for (int i = 1; i < len_input; i++) {
     // compare array[dum_i] to item on left
         int temp = 0;
@@ -73,26 +75,24 @@ int main () {
         myfile.close();
         }
 
-    else std::cout << "Unable to open file";
+    else std::cout << "INPUT ERROR: Unable to open file, check file name or path." << std::endl;
 
     len = data_array.size();
     std::cout << "Reading data from: " << input_text << std::endl;
 
     // Ask what method want to sort
-    std::string method;
+    char method[] = "";
     std::cout << "Choose method of sorting (S)Selection, (I)Insertion, (M)Merge, or (Q)Quick Sort: ";
     std::cin >> method;
-    std::cout << '\n';
 
-    // Check validity of selection
-    if (method != "S" || method != "I" || method != "M" || method != "Q" || method != "s" || method != "i" || method != "m" || method != "q") {
-        std::cout << "'" << method << "'" << " is not a proper sorting algorithm, please run program again, and select proper sorting algorithm." << std::endl;
+    if (std::strcmp(method, "S") != 0 && std::strcmp(method, "I") != 0 && std::strcmp(method, "M") != 0 && std::strcmp(method, "Q") != 0) {
+        std::cout << "INPUT ERROR: '" << method << "'" << " is not a valid method, please try again." << std::endl;
         return 1;
     }
 
     // See if sorted
     if (confirmSorted(data_array, len)) {
-        std::cout << "Confirmed Sorted" <<std::endl;
+        std::cout << "Confirmed Sorted!" <<std::endl;
     } else {
         std::cout << "Confirmed NOT Sorted" << std::endl;
     }
@@ -101,11 +101,11 @@ int main () {
     auto start = std::chrono::high_resolution_clock::now();
 
     // Sorting algorithm selection
-    if (method == "S" || method == "s") {
+    if (std::strcmp(method, "S") == 0) {
         selectionSort(data_array, len);
-    } else if (method == "I") {
+    } else if (std::strcmp(method, "I") == 0) {
         insertionSort(data_array, len);
-    } else if (method == "Q") {
+    } else if (std::strcmp(method, "M") == 0) {
         std::cout << "in progress";
     } else {
         std::cout << "in progress";
@@ -119,7 +119,7 @@ int main () {
 
     // See if sorted
     if (confirmSorted(data_array, len)) {
-        std::cout << "Confirmed Sorted" <<std::endl;
+        std::cout << "Confirmed Sorted!" <<std::endl;
     } else {
         std::cout << "Confirmed NOT Sorted" << std::endl;
     }
