@@ -1,31 +1,11 @@
 #include<iostream>
+#include<vector>
 
-int main() {
-   
-   // get user input
-   int len;
-   std::cout << "Length: ";
-   std::cin >> len;
-   int array_to_sort[len];
-
-   // create array
-   for (int i = 0; i < len; i++) {
-      array_to_sort[i] = rand() % (len * 10);
-   }
-
-   // print input array
-   std::cout << "[";
-   for (int i = 0; i < len; i++) {
-      std::cout << array_to_sort[i] << " ";
-   }
-   std::cout << "]" << std::endl;
-
-   // perform quick sort
-
+int partition(std::vector<int>& array, int begin, int end) {
    // select partition, make temp array
-   int a = array_to_sort[0];
-   int b = array_to_sort[len-1];
-   int c = array_to_sort[len/2];
+   int a = array[begin];
+   int b = array[end-1];
+   int c = array[end/2];
    int temp_array[3] = {a, b, c};
 
    // sort the temp array using insertion sort
@@ -42,14 +22,73 @@ int main() {
             }
    }
 
-   // create the partition
-   array_to_sort[0] = temp_array[0];
-   array_to_sort[len/2] = temp_array[1];
-   array_to_sort[len-1] = temp_array[2];   
+   // create the partition, store the pivot value a position 1
+   array[begin] = temp_array[0]; // less than median
+   array[begin + 1] = temp_array[1]; // pivot value (median of 3)
+   array[end-1] = temp_array[2];   // greater than pivot (at end of array)
 
-   //set up front and rear counters
-   int front_counter = 1;
-   int rear_counter = len-1;
+   // set up front, rear counters, and pivot value
+   int front_counter = begin + 2;
+   int rear_counter = end-2;
+   int pivot_index = begin + 1;
+   std::cout << "Pivot Value: " << array[pivot_index] << std::endl;
+
+   bool test = true;
+
+   while (test == true) {
+      while (array[front_counter] < array[pivot_index]) {
+         std::cout << "Front counter:" << array[front_counter] << std::endl;
+         if (front_counter > rear_counter) {
+            break;
+         }
+         front_counter++;
+      }
+      while (array[rear_counter] > array[pivot_index]) {
+         std::cout << "Rear counter:" << array[rear_counter] << std::endl;
+         if (rear_counter < front_counter) {
+            break;
+         }
+         rear_counter--;
+      }
+      if (front_counter > rear_counter) {
+         test = false;
+         int pivot_swap = array[pivot_index];
+         array[pivot_index] = array[rear_counter];
+         array[rear_counter] = pivot_swap;
+      } else {
+         int temp_place = array[front_counter];
+         array[front_counter] = array[rear_counter];
+         array[rear_counter] = temp_place;
+         front_counter++;
+         rear_counter--;
+      }
+   }
+
+}
+
+int main() {
+   
+   // get user input
+   int len;
+   std::cout << "Length: ";
+   std::cin >> len;
+   std::vector<int> array_to_sort;
+
+   // create array
+   for (int i = 0; i < len; i++) {
+      array_to_sort.push_back(rand() % (len * 10));
+   }
+
+   // print input array
+   std::cout << "[";
+   for (int i = 0; i < len; i++) {
+      std::cout << array_to_sort[i] << " ";
+   }
+   std::cout << "]" << std::endl;
+
+   // perform quick sort //
+
+   partition(array_to_sort, 0, len);
 
    // print result after selection sort
    std::cout << "\nAfter quicksort sort" << std::endl;
