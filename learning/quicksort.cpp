@@ -63,7 +63,10 @@ int partition(std::vector<int>& array, int begin, int end) {
          rear_counter--;
       }
    }
+   std::cout << "Partition Ratio: " << (rear_counter*1.0) / (end - begin)*1.0 << std::endl;
 
+   //return pivot point location (ith spot is now known, serve as end of next partitioning)
+   return rear_counter;
 }
 
 int main() {
@@ -87,8 +90,25 @@ int main() {
    std::cout << "]" << std::endl;
 
    // perform quick sort //
+   int low = 0;
+   int high = len;
+   int sorted = 0;
+   while (sorted <= len) {
+      int pivoted = partition(array_to_sort, low, high);
+      low = 0;
+      high = pivoted-1;
 
-   partition(array_to_sort, 0, len);
+         // print result after selection sort
+      std::cout << "\nAfter partition" << std::endl;
+
+      // print input array
+      std::cout << "[";
+      for (int i = 0; i < len; i++) {
+         std::cout << array_to_sort[i] << " ";
+      }
+      std::cout << "]" << std::endl;
+
+   }
 
    // print result after selection sort
    std::cout << "\nAfter quicksort sort" << std::endl;
