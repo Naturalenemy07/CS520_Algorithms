@@ -1,8 +1,22 @@
 #include<iostream>
 #include<vector>
 
+void swap(std::vector<int>& array, int index_a, int index_b) {
+   int temp = array[index_a];
+   array[index_a] = array[index_b];
+   array[index_b] = temp;
+}
+
 int partition(std::vector<int>& array, int begin, int end) {
-   // select partition, make temp array
+   // // first check if the length is only 2, if so, simply check if sorted and swap if not
+   // if (end-begin == 1) {
+   //    if (array[begin] > array[end]) {
+   //       swap(array, begin, end);
+   //       return 
+   //    }
+   // }
+
+   // select partition, make temp array.  Only works if subarray is 3 or more
    int a = array[begin];
    int b = array[end-1];
    int c = array[end/2];
@@ -27,46 +41,35 @@ int partition(std::vector<int>& array, int begin, int end) {
    array[begin + 1] = temp_array[1]; // pivot value (median of 3)
    array[end-1] = temp_array[2];   // greater than pivot (at end of array)
 
+   std::cout << "Pivot Value: " << temp_array[1] << std::endl;
+
    // set up front, rear counters, and pivot value
-   int front_counter = begin + 2;
-   int rear_counter = end-2;
+   int front_scan = begin + 2;
+   int rear_scan = end-2;
    int pivot_index = begin + 1;
-   std::cout << "Pivot Value: " << array[pivot_index] << std::endl;
 
-   bool test = true;
-
-   while (test == true) {
-      while (array[front_counter] < array[pivot_index]) {
-         std::cout << "Front counter:" << array[front_counter] << std::endl;
-         if (front_counter > rear_counter) {
-            break;
-         }
-         front_counter++;
+   // scan left, then right, swap values scanners stopped at
+   while (rear_scan >= front_scan) {
+      while (array[front_scan] <= array[pivot_index]) {
+         front_scan++;
       }
-      while (array[rear_counter] > array[pivot_index]) {
-         std::cout << "Rear counter:" << array[rear_counter] << std::endl;
-         if (rear_counter < front_counter) {
-            break;
-         }
-         rear_counter--;
+      while (array[rear_scan] > array[pivot_index]) {
+         rear_scan--;
       }
-      if (front_counter > rear_counter) {
-         test = false;
-         int pivot_swap = array[pivot_index];
-         array[pivot_index] = array[rear_counter];
-         array[rear_counter] = pivot_swap;
-      } else {
-         int temp_place = array[front_counter];
-         array[front_counter] = array[rear_counter];
-         array[rear_counter] = temp_place;
-         front_counter++;
-         rear_counter--;
+      if (rear_scan > front_scan) {
+         swap(array, front_scan, rear_scan);
+      } else{
+         break;
       }
    }
-   std::cout << "Partition Ratio: " << (rear_counter*1.0) / (end - begin)*1.0 << std::endl;
+
+   // swap pivot index with rear_scan
+   swap(array, rear_scan, pivot_index);
+
+   std::cout << "Partition Ratio: " << (rear_scan*1.0) / (end - begin)*1.0 << std::endl;
 
    //return pivot point location (ith spot is now known, serve as end of next partitioning)
-   return rear_counter;
+   return rear_scan;
 }
 
 int main() {
@@ -93,10 +96,14 @@ int main() {
    int low = 0;
    int high = len;
    int sorted = 0;
-   while (sorted <= len) {
-      int pivoted = partition(array_to_sort, low, high);
-      low = 0;
-      high = pivoted-1;
+   while (sorted < len) {
+      int pivoted = partition(array_to_sort, low, high); 
+      high = pivoted;
+
+      if (high-low == 1) {
+         sorted+=2;
+         low = sorted;
+      }
 
          // print result after selection sort
       std::cout << "\nAfter partition" << std::endl;
