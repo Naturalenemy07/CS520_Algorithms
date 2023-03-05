@@ -1,3 +1,5 @@
+// partition is not fixed....may just try and copy the code in the textbook....
+
 #include<iostream>
 #include<vector>
 
@@ -7,15 +9,25 @@ void swap(std::vector<int>& array, int index_a, int index_b) {
    array[index_b] = temp;
 }
 
-int partition(std::vector<int>& array, int begin, int end) {
-   // // first check if the length is only 2, if so, simply check if sorted and swap if not
-   // if (end-begin == 1) {
-   //    if (array[begin] > array[end]) {
-   //       swap(array, begin, end);
-   //       return 
-   //    }
-   // }
+void sort(std::vector<int>& array, int low, int high) {
+   if (high <= low) {
+      return;
+   }
+   int pivoted = partition(array, low, high); 
+   sort(array, low, pivoted-1);
+   sort(array, pivoted+1, high);
+}
 
+void print_array(std::vector<int>& array, int len) {
+   // print input array
+   std::cout << "[";
+   for (int i = 0; i < len; i++) {
+      std::cout << array[i] << " ";
+   }
+   std::cout << "]" << std::endl;
+}
+
+int partition(std::vector<int>& array, int begin, int end) {
    // select partition, make temp array.  Only works if subarray is 3 or more
    int a = array[begin];
    int b = array[end-1];
@@ -85,45 +97,12 @@ int main() {
       array_to_sort.push_back(rand() % (len * 10));
    }
 
-   // print input array
-   std::cout << "[";
-   for (int i = 0; i < len; i++) {
-      std::cout << array_to_sort[i] << " ";
-   }
-   std::cout << "]" << std::endl;
+   // print current array
+   print_array(array_to_sort, len);
 
    // perform quick sort //
-   int low = 0;
-   int high = len;
-   int sorted = 0;
-   while (sorted < len) {
-      int pivoted = partition(array_to_sort, low, high); 
-      high = pivoted;
+   sort(array_to_sort);
 
-      if (high-low == 1) {
-         sorted+=2;
-         low = sorted;
-      }
-
-         // print result after selection sort
-      std::cout << "\nAfter partition" << std::endl;
-
-      // print input array
-      std::cout << "[";
-      for (int i = 0; i < len; i++) {
-         std::cout << array_to_sort[i] << " ";
-      }
-      std::cout << "]" << std::endl;
-
-   }
-
-   // print result after selection sort
-   std::cout << "\nAfter quicksort sort" << std::endl;
-
-   // print input array
-   std::cout << "[";
-   for (int i = 0; i < len; i++) {
-      std::cout << array_to_sort[i] << " ";
-   }
-   std::cout << "]" << std::endl;
+   // print current array
+   print_array(array_to_sort, len);
 }
