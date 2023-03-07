@@ -1,5 +1,3 @@
-// partition is not fixed....may just try and copy the code in the textbook....
-
 #include<iostream>
 #include<vector>
 #include<random>
