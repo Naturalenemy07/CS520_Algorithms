@@ -2,33 +2,36 @@
 
 #include<iostream>
 #include<vector>
+#include<random>
 
-void median_of_three(std::vector<int>& array, int len) {
-   int first = array[0];
-   int middle = array[len/2];
-   int last = array[len-1];
+int median_of_three(std::vector<int>& array) {
+   int len = array.size();
+   std::random_device rd;
+   std::mt19937 gen(rd());
+   std::uniform_int_distribution<> distrib(0, len-1);
 
-   std::cout << first << " " << middle << " " << last << std::endl;
+   int temp[] = {0,0,0};
 
-   int temp_array[3];
-
-   if (first < middle) {
-      temp_array[0] = first;
-      temp_array[1] = middle;
-   } else {
-      temp_array[0] = middle;
-      temp_array[1] = first;
+   // randomly selects location of three integers
+   for (int i = 0; i < 3; i++) {
+      temp[i] = array[distrib(gen)];
    }
-   if (middle < last) {
-      temp_array[2] = last;
-   } else {
-      temp_array[1] = last;
-      temp_array[2] = middle;
+
+   // chooses the middle of the three numbers, returns that number
+   int min = 0;
+   int max = 0;
+   int middle = 0;
+   for (int j = 1; j < 3; j++) {
+      if (temp[j] < temp[min]) {
+         min = j;
+      }
+      if (temp[j] > temp[max]) {
+         max = j;
+      }
    }
-   if (last < first) {
-      temp_array[0] = last;
-      temp_array[1] = first;
-   }
+
+   return temp[3-(min+max)];
+   
 }
 
 void print_array(std::vector<int>& array, int len) {
@@ -46,15 +49,14 @@ void swap(std::vector<int>& array, int index_a, int index_b) {
    array[index_b] = temp;
 }
 
-int partition(std::vector<int>& array, int begin, int end, int len) {
+int partition(std::vector<int>& array, int begin, int end) {
    // create scanners
    int front_scan = begin;
    int rear_scan = end;
 
    // pivot value is the first digit
    //need to select the median of three as the pivot value
-   int pivot_value = array[begin];
-   median_of_three(array, len);
+   int pivot_value = median_of_three(array);
 
    // partitioning
    while (true) {
@@ -76,15 +78,17 @@ int partition(std::vector<int>& array, int begin, int end, int len) {
       swap(array, front_scan, rear_scan);
       return rear_scan;
     }
+   
+   return rear_scan;
 }
 
-void qsort(std::vector<int>& array, int low, int high, int len) {
+void qsort(std::vector<int>& array, int low, int high) {
    if (high <= low) {
       return;
    }
-   int pivoted = partition(array, low, high, len);
-   qsort(array, low, pivoted-1, len);
-   qsort(array, pivoted+1, high, len);
+   int pivoted = partition(array, low, high);
+   qsort(array, low, pivoted-1);
+   qsort(array, pivoted+1, high);
 }
 
 int main() {
@@ -95,16 +99,21 @@ int main() {
    std::cin >> len;
    std::vector<int> array_to_sort;
 
+   // random number generator for vector creation
+   std::random_device rd;
+   std::mt19937 gen(rd());
+   std::uniform_int_distribution<> distrib(0, len*10);
+
    // create array
    for (int i = 0; i < len; i++) {
-      array_to_sort.push_back(rand() % (len * 10));
+      array_to_sort.push_back(distrib(gen));
    }
 
    // print current array
    print_array(array_to_sort, len-1);
 
    // perform quick sort //
-   qsort(array_to_sort, 0, len-1, len);
+   qsort(array_to_sort, 0, len-1);
 
    // print current array
    print_array(array_to_sort, len-1);
