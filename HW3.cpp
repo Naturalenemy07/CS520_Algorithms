@@ -1,91 +1,133 @@
 #include<iostream>
+#include<vector>
+#include<random>
+
+int median_of_three(std::vector<int>& array) {
+   int len = array.size();
+   std::random_device rd;
+   std::mt19937 gen(rd());
+   std::uniform_int_distribution<> distrib(0, len-1);
+
+   // randomly selects index of three integers, stores in temp array
+   int temp[] = {0,0,0};
+   for (int i = 0; i < 3; i++) {
+      int index = distrib(gen);
+      temp[i] = index;
+   }
+
+   // chooses the middle of the three values, returns the index(in input array) of that median
+   int min = 0;
+   int max = 0;
+   for (int j = 1; j < 3; j++) {
+      if (array[temp[j]] < array[temp[min]]) {
+         min = j;
+      }
+      if (array[temp[j]] > array[temp[max]]) {
+         max = j;
+      }
+   }
+   return temp[3-(min+max)];
+}
+
+void print_array(std::vector<int>& array, int len) {
+   // print input array
+   std::cout << "[";
+   for (int i = 0; i <= len; i++) {
+      std::cout << array[i] << " ";
+   }
+   std::cout << "]" << std::endl;
+}
+
+void swap(std::vector<int>& array, int index_a, int index_b) {
+   int temp = array[index_a];
+   array[index_a] = array[index_b];
+   array[index_b] = temp;
+}
+
+int partition(std::vector<int>& array, int begin, int end) {
+   // create scanners
+   int front_scan = begin;
+   int rear_scan = end;
+ 
+   //need to select the median of three as the pivot value
+   int pivot_value_index = median_of_three(array);
+   int pivot_value = array[pivot_value_index];
+
+   // swap the first value in array with pivot value
+   swap(array, 0, pivot_value_index);
+
+   // partitioning
+   while (true) {
+      // Front scanner moves up, stopping at any value greater than the pivot value
+      while (array[front_scan] <= pivot_value) {
+         front_scan++;
+         if (front_scan == end) {
+            break;
+         }
+      }
+      // Rear scanner moves down, stopping at any value less than the pivot value
+      while (array[rear_scan] > pivot_value) {
+         rear_scan--;
+         if (rear_scan == begin) {
+            break;
+         }
+      }
+      // Makes sure scanners didn't cross, then swaps the front and rear scanner
+      // If the scanners did cross, it swaps the pivot value with the value at the rear scanner
+      if (front_scan < rear_scan) {
+         swap(array, front_scan, rear_scan);
+         std::cout << "Partition value: " << pivot_value << std::endl;
+         std::cout << "After swap:" << std::endl;
+         print_array(array, array.size());
+      } else {
+         swap(array, 0, rear_scan);
+         std::cout << "Partition value: " << array[rear_scan] << std::endl;
+         std::cout << "After partition completion:" << std::endl;
+         print_array(array, array.size());
+      }
+   }   
+   return rear_scan;
+}
+
+void qsort(std::vector<int>& array, int low, int high) {
+   if (high <= low) {
+      return;
+   }
+   if (high - low == 1) {
+      if (array[low] > array[high]) {
+         swap(array, low, high);
+         return;
+      }
+   }
+   int pivoted = partition(array, low, high);
+   qsort(array, low, pivoted-1);
+   qsort(array, pivoted+1, high);
+}
 
 int main() {
    
-   // get user input
+   // get user input to create random array
    int len;
    std::cout << "Length: ";
    std::cin >> len;
-   int array_to_sort[len];
+   std::vector<int> array_to_sort;
+
+   // random number generator for vector creation
+   std::random_device rd;
+   std::mt19937 gen(rd());
+   std::uniform_int_distribution<> distrib(0, len*10);
 
    // create array
    for (int i = 0; i < len; i++) {
-      array_to_sort[i] = rand() % (len * 10);
+      array_to_sort.push_back(distrib(gen));
    }
 
-   // print input array
-   std::cout << "[";
-   for (int i = 0; i < len; i++) {
-      std::cout << array_to_sort[i] << " ";
-   }
-   std::cout << "]" << std::endl;
+   // print current array
+   print_array(array_to_sort, len-1);
 
    // perform quick sort //
+   qsort(array_to_sort, 0, len-1);
 
-   // select partition, make temp array
-   int a = array_to_sort[0];
-   int b = array_to_sort[len-1];
-   int c = array_to_sort[len/2];
-   int temp_array[3] = {a, b, c};
-
-   // sort the temp array using insertion sort
-   for (int dum_i = 1; dum_i < 3; dum_i++) {
-      // compare array[dum_i] to item on left
-      int temp = 0;
-      int count = dum_i;
-      // repeat while array[dum_i] is less than item to its left
-      while (temp_array[count] < temp_array[count -1] && count > 0) {
-            temp = temp_array[count];
-            temp_array[count] = temp_array[count-1];
-            temp_array[count-1] = temp;
-            count--;
-            }
-   }
-
-   // create the partition
-   array_to_sort[0] = temp_array[0];
-   array_to_sort[len/2] = temp_array[1];
-   array_to_sort[len-1] = temp_array[2];   
-
-   // set up front, rear counters, and pivot value
-   int front_counter = 1;
-   int rear_counter = len-2;
-   int pivot_index = len/2;
-   std::cout << "Pivot Value: " << array_to_sort[pivot_index] << std::endl;
-
-   while (bool test = true) {
-      while (array_to_sort[front_counter] < array_to_sort[pivot_index]) {
-         std::cout << "Front counter:" << array_to_sort[front_counter] << std::endl;
-         front_counter++;
-         if (front_counter >= rear_counter) {
-            break;
-         }
-      }
-      while (array_to_sort[rear_counter] > array_to_sort[pivot_index]) {
-         std::cout << "Rear counter:" << array_to_sort[rear_counter] << std::endl;
-         rear_counter--;
-         if (rear_counter <= front_counter) {
-            break;
-         }
-      }
-      if (front_counter >= rear_counter) {
-         test = false;
-      }
-      int temp_place = array_to_sort[front_counter];
-      array_to_sort[front_counter] = array_to_sort[rear_counter];
-      array_to_sort[rear_counter] = temp_place;
-
-   }
-
-   
-
-   // print result after selection sort
-   std::cout << "\nAfter quicksort sort" << std::endl;
-
-   // print input array
-   std::cout << "[";
-   for (int i = 0; i < len; i++) {
-      std::cout << array_to_sort[i] << " ";
-   }
-   std::cout << "]" << std::endl;
+   // print current array
+   print_array(array_to_sort, len-1);
 }
