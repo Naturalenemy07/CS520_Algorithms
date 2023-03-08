@@ -83,33 +83,39 @@ int partition(int array[], int begin, int end) {
             break;
          }
       }
-      break;
-    }
-    if (front_scan < rear_scan) {
-      //swap(array, front_scan, rear_scan);
-      int temp = array[front_scan];
-      array[front_scan] = array[rear_scan];
-      array[rear_scan] = temp;
-      
-      std::cout << "Partition value: " << pivot_value << std::endl;
-      std::cout << "After swap:" << std::endl;
-      print_array(array, 15);
-
-      ///  remove above code and uncomment swap
-
-      return rear_scan;
-    }
    
+      if (front_scan < rear_scan) {
+         //swap(array, front_scan, rear_scan);
+         ////////////////////////////////////////
+         int temp = array[front_scan];
+         array[front_scan] = array[rear_scan];
+         array[rear_scan] = temp;
+         
+         std::cout << "Partition value: " << pivot_value << std::endl;
+         std::cout << "After swap:" << std::endl;
+         print_array(array, 15);
+         ///  remove above code and uncomment swap
+      } else {
+         //swap(array, 0, rear_scan)
+         array[0] = array[rear_scan];
+         array[rear_scan] = pivot_value;
+         
+         std::cout << "Partition value: " << array[rear_scan] << std::endl;
+         std::cout << "After partition completion:" << std::endl;
+         print_array(array, 15);
+         break;
+      }
+   }
    return rear_scan;
 }
 
 int main() {
-    int array[15] = {7, 12, 4, 3, 1, 21, 17, 6, 22, 9, 15, 1, 19, 20, 25}; //
-    int len = sizeof(array)/4;
-    std::cout << "Before Partition: " << std::endl;
-    print_array(array,len);
-    int partition_index = partition(array, 0, len-1);
-    std::cout << "After Partitions with partition value of: " << array[partition_index] << std::endl;
-    print_array(array, len);
-    return 0;
-}
+   int array[15] = {7, 12, 4, 3, 1, 21, 17, 6, 22, 9, 15, 1, 19, 20, 25}; //
+   int len = sizeof(array)/4;
+   std::cout << "Before Partition: " << std::endl;
+   print_array(array,len);
+   int partition_index = partition(array, 0, len-1);
+   std::cout << "After Partitions with partition value of: " << array[partition_index] << std::endl;
+   print_array(array, len);
+   return 0;
+   }
