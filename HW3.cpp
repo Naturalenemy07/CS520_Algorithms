@@ -1,3 +1,11 @@
+/**
+ * John Caruthers
+ * 10Mar23
+ * Hood College 
+ * CS520 Algorithms, Spring 2023
+ * Assignment 3
+*/
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -237,6 +245,7 @@ int main () {
         std::cout << "Confirmed NOT Sorted" << std::endl;
     }
 
+    // Starts timer
     auto start = std::chrono::high_resolution_clock::now();
 
     // Sorting algorithm selection, timer start
