@@ -34,20 +34,25 @@ void printVector(std::vector<huffmanChar>& input_vector) {
 
     int len = input_vector.size();
     for (int j = 0; j < len; j++) {
-        std::cout << input_vector[j].key << ": " << input_vector[j].count << std::endl;
+        std::cout << input_vector[j].key << "  " << input_vector[j].count << std::endl;
     }
+    return;
 }
 
 void cleanVector(std::vector<huffmanChar>& input_vector) {
     /**
      * Input: vector of structures (huffmanChar)
      * Output: None
-     * Function: Cleans up the vector, removes all unneeded characters, sets special characters per HW 4: `-' for space, `.' for period, `!' for new line. (no EOM for my system)
+     * Function: Cleans up the vector, removes all unneeded characters(no EOF or '/n' detected)
     */
 
-   // May not do this, would not be efficient.  Would need to swap, the pop out
+   // delete all elements prior to 33 (before "!" in ascii)
+   input_vector.erase(input_vector.begin(), input_vector.begin()+33);
+   input_vector.erase(input_vector.begin()+1, input_vector.begin()+12);
 
-
+   //delete everything except for lower case letters and "space"
+   input_vector.erase(input_vector.begin()+3, input_vector.begin()+53);
+   return;
 }
 
 int main(){
@@ -69,12 +74,18 @@ int main(){
     // Read data, update count of characters in text_vector
     while (input_file_data.get(char_from_file)) {
         // If upper case of letter is detected, add to the lower case letter
+        // If space detected, will add to "-" (45 in ascii)
         if (text_vector[char_from_file].key > 64 && text_vector[char_from_file].key < 91) {
             text_vector[char_from_file + 32].count++;
+        } else if (text_vector[char_from_file].key == 32) {
+            text_vector[45].count++;
         } else { 
             text_vector[char_from_file].count++;
         }
     }
+
+    // Clean up vector, remove elements not used
+    cleanVector(text_vector);
 
     // Print vector contents
     printVector(text_vector);
