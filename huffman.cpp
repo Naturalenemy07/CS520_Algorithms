@@ -3,19 +3,19 @@
 #include <string>
 #include <vector>
 
-struct huffmanChar {
+struct huffmanCharFreq {
     char key;
     int count;
 };
 
-void emptyVector(std::vector<huffmanChar>& input_vector, int size) {
+void emptyVector(std::vector<huffmanCharFreq>& input_vector, int size) {
     /**
-     * Inputs: vector of structures (huffmanChar), and integer that designates size of vector
+     * Inputs: vector of structures (huffmanCharFreq), and integer that designates size of vector
      * Output: None
      * Function: builds a vector of size "size", key is the index in vector, count is 0
     */
 
-    huffmanChar empty_char;
+    huffmanCharFreq empty_char;
     empty_char.key = 0;
     empty_char.count = 0;
     for (int i = 0; i < size; i++) {
@@ -25,9 +25,9 @@ void emptyVector(std::vector<huffmanChar>& input_vector, int size) {
     return;
 }
 
-void printVector(std::vector<huffmanChar>& input_vector) {
+void printVector(std::vector<huffmanCharFreq>& input_vector) {
     /**
-     * Input: vector of structures (huffmanChar)
+     * Input: vector of structures (huffmanCharFreq)
      * Output: None
      * Function: prints out vector contents
     */
@@ -39,9 +39,9 @@ void printVector(std::vector<huffmanChar>& input_vector) {
     return;
 }
 
-void cleanVector(std::vector<huffmanChar>& input_vector) {
+void cleanVector(std::vector<huffmanCharFreq>& input_vector) {
     /**
-     * Input: vector of structures (huffmanChar)
+     * Input: vector of structures (huffmanCharFreq)
      * Output: None
      * Function: Cleans up the vector, removes all unneeded characters(no EOF or '/n' detected)
     */
@@ -55,13 +55,18 @@ void cleanVector(std::vector<huffmanChar>& input_vector) {
    return;
 }
 
-int main(){
+std::vector<huffmanCharFreq> freqTableGen(bool print_table = true){
+    /**
+     * Input: None
+     * Output: returns frequency table as a vector of huffmanCharFreq structures
+     * Function: generates frequency table
+    */
     // Set variables, store information in vector
     int end = 123;
     std::string input_file;
     char char_from_file;
     std::ifstream input_file_data;
-    std::vector<huffmanChar> text_vector;
+    std::vector<huffmanCharFreq> text_vector;
 
     // Fill vector with empty spaces, index indicates ascii character
     emptyVector(text_vector, end);
@@ -71,13 +76,10 @@ int main(){
     std::cin >> input_file;
     input_file_data.open(input_file);
 
-    // Read data, update count of characters in text_vector
+    // Read data, update count of characters in text_vector (assuming no upper case)
     while (input_file_data.get(char_from_file)) {
-        // If upper case of letter is detected, add to the lower case letter
         // If space detected, will add to "-" (45 in ascii)
-        if (text_vector[char_from_file].key > 64 && text_vector[char_from_file].key < 91) {
-            text_vector[char_from_file + 32].count++;
-        } else if (text_vector[char_from_file].key == 32) {
+        if (text_vector[char_from_file].key == 32) {
             text_vector[45].count++;
         } else { 
             text_vector[char_from_file].count++;
@@ -87,6 +89,16 @@ int main(){
     // Clean up vector, remove elements not used
     cleanVector(text_vector);
 
-    // Print vector contents
-    printVector(text_vector);
+    // Print vector contents, return
+    if (print_table == true) {
+        printVector(text_vector);
+    }
+    std::cout << "Generated Frequency Table" << std::endl;
+    return text_vector;
+}
+
+int main() {
+    std::vector<huffmanCharFreq> freqTablesVector;
+    // Create Frequency Table
+    freqTablesVector = freqTableGen(true);
 }
