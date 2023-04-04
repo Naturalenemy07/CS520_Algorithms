@@ -10,6 +10,8 @@ struct huffmanCharFreq {
 
 struct huffmanNode {
     char key;
+    int weight;
+    huffmanNode* parent;
     huffmanNode* left_child;
     huffmanNode* right_child;
 };
@@ -113,6 +115,7 @@ int main() {
     node_two.key = 98;
     node_three.key = 99;
 
-    node_one.left_child = &node_two; 
+    node_one.left_child = &node_two;
+    node_two.parent = &node_one;
     std::cout << node_one.left_child << std::endl;
     std::cout << &node_two << std::endl;}
