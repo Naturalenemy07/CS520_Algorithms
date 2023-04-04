@@ -8,6 +8,12 @@ struct huffmanCharFreq {
     int count;
 };
 
+struct huffmanNode {
+    char key;
+    huffmanNode* left_child;
+    huffmanNode* right_child;
+};
+
 void emptyVector(std::vector<huffmanCharFreq>& input_vector, int size) {
     /**
      * Inputs: vector of structures (huffmanCharFreq), and integer that designates size of vector
@@ -101,4 +107,12 @@ int main() {
     std::vector<huffmanCharFreq> freqTablesVector;
     // Create Frequency Table
     freqTablesVector = freqTableGen(true);
-}
+
+    huffmanNode node_one, node_two, node_three;
+    node_one.key = 97;
+    node_two.key = 98;
+    node_three.key = 99;
+
+    node_one.left_child = &node_two; 
+    std::cout << node_one.left_child << std::endl;
+    std::cout << &node_two << std::endl;}
