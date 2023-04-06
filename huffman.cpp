@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 struct huffmanCharFreq {
     char key;
@@ -106,16 +107,45 @@ std::vector<huffmanCharFreq> freqTableGen(bool print_table = true){
 }
 
 int main() {
-    std::vector<huffmanCharFreq> freqTablesVector;
-    // Create Frequency Table
-    freqTablesVector = freqTableGen(true);
+    // std::vector<huffmanCharFreq> freqTablesVector;
+    // // Create Frequency Table
+    // freqTablesVector = freqTableGen(true);
 
-    huffmanNode node_one, node_two, node_three;
-    node_one.key = 97;
-    node_two.key = 98;
-    node_three.key = 99;
+    // Manually create nodes to test huffman tree algorithm
+    std::vector<huffmanNode> huffmanNodesVector;
 
-    node_one.left_child = &node_two;
-    node_two.parent = &node_one;
-    std::cout << node_one.left_child << std::endl;
-    std::cout << &node_two << std::endl;}
+    huffmanNode n1, n2, n3, n4, n5, n6;
+    n1.key = 97;
+    n2.key = 98;
+    n3.key = 99;
+    n4.key = 100;
+    n5.key = 114;
+    n6.key = 33;
+
+    n1.weight = 5;
+    n2.weight = 2;
+    n3.weight = 1;
+    n4.weight = 1;
+    n5.weight = 2;
+    n6.weight = 1;
+
+    // push back onto vector
+    huffmanNodesVector.push_back(n1);
+    huffmanNodesVector.push_back(n2);
+    huffmanNodesVector.push_back(n3);
+    huffmanNodesVector.push_back(n4);
+    huffmanNodesVector.push_back(n5);
+    huffmanNodesVector.push_back(n6);
+
+    // try to sort
+    std::sort(huffmanNodesVector.begin(), huffmanNodesVector.end());
+
+    // print vector
+    for (int i = 0; i < huffmanNodesVector.size(); i++) {
+        std::cout << huffmanNodesVector[i].key << ": " << huffmanNodesVector[i].weight << std::endl; 
+    }
+
+    // // How to 
+    // n1.left_child = &n2;
+    // n2.parent = &n1;
+}
