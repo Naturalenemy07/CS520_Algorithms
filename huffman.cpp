@@ -17,6 +17,10 @@ struct huffmanNode {
     huffmanNode* right_child;
 };
 
+bool mysortfunction(huffmanNode a, huffmanNode b) {
+    return (a.weight < b.weight);
+}
+
 void emptyVector(std::vector<huffmanCharFreq>& input_vector, int size) {
     /**
      * Inputs: vector of structures (huffmanCharFreq), and integer that designates size of vector
@@ -138,7 +142,7 @@ int main() {
     huffmanNodesVector.push_back(n6);
 
     // try to sort
-    std::sort(huffmanNodesVector.begin(), huffmanNodesVector.end());
+    std::sort(huffmanNodesVector.begin(), huffmanNodesVector.end(), mysortfunction);
 
     // print vector
     for (int i = 0; i < huffmanNodesVector.size(); i++) {
