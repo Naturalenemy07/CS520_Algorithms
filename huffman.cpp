@@ -4,11 +4,6 @@
 #include <vector>
 #include <algorithm>
 
-struct huffmanCharFreq {
-    char key;
-    int count;
-};
-
 struct huffmanNode {
     char key;
     int weight;
@@ -21,16 +16,16 @@ bool mysortfunction(huffmanNode a, huffmanNode b) {
     return (a.weight < b.weight);
 }
 
-void emptyVector(std::vector<huffmanCharFreq>& input_vector, int size) {
+void emptyVector(std::vector<huffmanNode>& input_vector, int size) {
     /**
-     * Inputs: vector of structures (huffmanCharFreq), and integer that designates size of vector
+     * Inputs: vector of structures (huffmanNodes), and integer that designates size of vector
      * Output: None
      * Function: builds a vector of size "size", key is the index in vector, count is 0
     */
 
-    huffmanCharFreq empty_char;
+    huffmanNode empty_char;
     empty_char.key = 0;
-    empty_char.count = 0;
+    empty_char.weight = 0;
     for (int i = 0; i < size; i++) {
         empty_char.key = i;
         input_vector.push_back(empty_char);
@@ -38,23 +33,23 @@ void emptyVector(std::vector<huffmanCharFreq>& input_vector, int size) {
     return;
 }
 
-void printVector(std::vector<huffmanCharFreq>& input_vector) {
+void printVector(std::vector<huffmanNode>& input_vector) {
     /**
-     * Input: vector of structures (huffmanCharFreq)
+     * Input: vector of structures (huffmanNodes)
      * Output: None
      * Function: prints out vector contents
     */
 
     int len = input_vector.size();
     for (int j = 0; j < len; j++) {
-        std::cout << input_vector[j].key << "  " << input_vector[j].count << std::endl;
+        std::cout << input_vector[j].key << "  " << input_vector[j].weight << std::endl;
     }
     return;
 }
 
-void cleanVector(std::vector<huffmanCharFreq>& input_vector) {
+void cleanVector(std::vector<huffmanNode>& input_vector) {
     /**
-     * Input: vector of structures (huffmanCharFreq)
+     * Input: vector of structures (huffmanNodes)
      * Output: None
      * Function: Cleans up the vector, removes all unneeded characters(no EOF or '/n' detected)
     */
@@ -68,10 +63,10 @@ void cleanVector(std::vector<huffmanCharFreq>& input_vector) {
    return;
 }
 
-std::vector<huffmanCharFreq> freqTableGen(bool print_table = true){
+std::vector<huffmanNode> freqTableGen(bool print_table = true){
     /**
      * Input: None
-     * Output: returns frequency table as a vector of huffmanCharFreq structures
+     * Output: returns frequency table as a vector of huffmanNodes structures
      * Function: generates frequency table
     */
     // Set variables, store information in vector
@@ -79,7 +74,7 @@ std::vector<huffmanCharFreq> freqTableGen(bool print_table = true){
     std::string input_file;
     char char_from_file;
     std::ifstream input_file_data;
-    std::vector<huffmanCharFreq> text_vector;
+    std::vector<huffmanNode> text_vector;
 
     // Fill vector with empty spaces, index indicates ascii character
     emptyVector(text_vector, end);
@@ -93,13 +88,13 @@ std::vector<huffmanCharFreq> freqTableGen(bool print_table = true){
     while (input_file_data.get(char_from_file)) {
         // If space detected, will add to "-" (45 in ascii)
         if (text_vector[char_from_file].key == 32) {
-            text_vector[45].count++;
+            text_vector[45].weight++;
         } else { 
-            text_vector[char_from_file].count++;
+            text_vector[char_from_file].weight++;
         }
     }
 
-    // Clean up vector, remove elements not used
+    // Clean up vector, remove elements not used, now the index and ASCII designation no longer match
     cleanVector(text_vector);
 
     // Print vector contents, return
@@ -107,49 +102,46 @@ std::vector<huffmanCharFreq> freqTableGen(bool print_table = true){
         printVector(text_vector);
     }
     std::cout << "Generated Frequency Table" << std::endl;
-    return text_vector;
+    std::cout << "text_vector address: " << &text_vector << std::endl;
+    return text_vector; // returns address of text vector (original storage that should be manipulated further)
 }
 
 int main() {
-    // std::vector<huffmanCharFreq> freqTablesVector;
-    // // Create Frequency Table
-    // freqTablesVector = freqTableGen(true);
+    std::vector<huffmanNode> freqTablesVector;
+    // Create Frequency Table
+    freqTablesVector = freqTableGen(true);
+    std::cout << "freqTablesVector Address: " << &freqTablesVector << std::endl;
 
-    // Manually create nodes to test huffman tree algorithm
-    std::vector<huffmanNode> huffmanNodesVector;
+    // // Sort Vector using Count as criteria
+    // std::sort(freqTablesVector.begin(), freqTablesVector.end(), mysortfunction);
 
-    huffmanNode n1, n2, n3, n4, n5, n6;
-    n1.key = 97;
-    n2.key = 98;
-    n3.key = 99;
-    n4.key = 100;
-    n5.key = 114;
-    n6.key = 33;
+    // printVector(freqTablesVector);
 
-    n1.weight = 5;
-    n2.weight = 2;
-    n3.weight = 1;
-    n4.weight = 1;
-    n5.weight = 2;
-    n6.weight = 1;
+    // // Manually create nodes to test huffman tree algorithm.  Need two vectors 
+    // std::vector<huffmanNode> InputVector;
+    // std::vector<huffmanNode> huffmanInternalNodesVector;
+    // std::vector<huffmanNode> huffmanTree;
 
-    // push back onto vector
-    huffmanNodesVector.push_back(n1);
-    huffmanNodesVector.push_back(n2);
-    huffmanNodesVector.push_back(n3);
-    huffmanNodesVector.push_back(n4);
-    huffmanNodesVector.push_back(n5);
-    huffmanNodesVector.push_back(n6);
+    // huffmanNode n1, n2, n3, n4;
+    // n1.key = 97;
+    // n2.key = 98;
+    // n3.key = 99;
+    // n4.key = 100;
 
-    // try to sort
-    std::sort(huffmanNodesVector.begin(), huffmanNodesVector.end(), mysortfunction);
+    // n1.weight = 5;
+    // n2.weight = 2;
+    // n3.weight = 1;
+    // n4.weight = 1;
 
-    // print vector
-    for (int i = 0; i < huffmanNodesVector.size(); i++) {
-        std::cout << huffmanNodesVector[i].key << ": " << huffmanNodesVector[i].weight << std::endl; 
-    }
+    // // push back onto vector
+    // InputVector.push_back(n1);
+    // InputVector.push_back(n2);
+    // InputVector.push_back(n3);
+    // InputVector.push_back(n4);
 
-    // // How to 
-    // n1.left_child = &n2;
-    // n2.parent = &n1;
+    // // sort
+    // std::sort(InputVector.begin(), InputVector.end(), mysortfunction);
+
+    // //copy vector
+    // huffmanInternalNodesVector = huffmanLeafNodesVector
 }
