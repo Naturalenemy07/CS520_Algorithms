@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <queue>
 
 struct huffmanNode {
     char key;
@@ -12,9 +13,13 @@ struct huffmanNode {
     huffmanNode* right_child;
 };
 
-bool mysortfunction(huffmanNode a, huffmanNode b) {
-    return (a.weight < b.weight);
-}
+struct { 
+    // This structure is necessary to compare the weights of huffmanNodes as elements of the priority queue
+    // It ensures that the sort uses the weights and prioritizes the smallest weight
+    bool operator() (huffmanNode a, huffmanNode b) {
+        return (a.weight > b.weight); 
+    }
+} queueCompareFunct;
 
 void emptyVector(std::vector<huffmanNode>& input_vector, int size) {
     /**
@@ -107,41 +112,31 @@ std::vector<huffmanNode> freqTableGen(bool print_table = true){
 }
 
 int main() {
-    std::vector<huffmanNode> freqTablesVector;
-    // Create Frequency Table
-    freqTablesVector = freqTableGen(true);
-    std::cout << "freqTablesVector Address: " << &freqTablesVector << std::endl;
 
-    // // Sort Vector using Count as criteria
-    // std::sort(freqTablesVector.begin(), freqTablesVector.end(), mysortfunction);
+    std::vector<huffmanNode> inputVector;
+    std::priority_queue huffmanQueue(inputVector.begin(), inputVector.end(), queueCompareFunct);
 
-    // printVector(freqTablesVector);
+    // Create Frequency Table, this will be the input to our Huffman binary tree generator
+    inputVector = freqTableGen(true);
 
-    // // Manually create nodes to test huffman tree algorithm.  Need two vectors 
-    // std::vector<huffmanNode> InputVector;
-    // std::vector<huffmanNode> huffmanInternalNodesVector;
-    // std::vector<huffmanNode> huffmanTree;
+    // Push items from input vector into priority queue
+    for(int i = 0; i < inputVector.size(); i++) {
+        huffmanQueue.push(inputVector[i]);
+    }
 
-    // huffmanNode n1, n2, n3, n4;
-    // n1.key = 97;
-    // n2.key = 98;
-    // n3.key = 99;
-    // n4.key = 100;
+    
 
-    // n1.weight = 5;
-    // n2.weight = 2;
-    // n3.weight = 1;
-    // n4.weight = 1;
+    // // Print vector and queue, compare
+    // std::cout << "inputVector" << std::endl;
+    // printVector(inputVector);
 
-    // // push back onto vector
-    // InputVector.push_back(n1);
-    // InputVector.push_back(n2);
-    // InputVector.push_back(n3);
-    // InputVector.push_back(n4);
+    // std::cout << "huffmanQueue" << std::endl;
+    // while(huffmanQueue.size() != 0) {
+    //     std::cout << huffmanQueue.top().key << " " << huffmanQueue.top().weight << std::endl;
+    //     huffmanQueue.pop();
+    // }
 
-    // // sort
-    // std::sort(InputVector.begin(), InputVector.end(), mysortfunction);
 
-    // //copy vector
-    // huffmanInternalNodesVector = huffmanLeafNodesVector
+    // // Sort Vector using Count as criteria, a requirement for Huffman coding
+    // std::sort(inputVector.begin(), inputVector.end(), mysortfunction);
 }
