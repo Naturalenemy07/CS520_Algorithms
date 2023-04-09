@@ -107,35 +107,53 @@ std::vector<huffmanNode> freqTableGen(bool print_table = true){
         printVector(text_vector);
     }
     std::cout << "Generated Frequency Table" << std::endl;
-    std::cout << "text_vector address: " << &text_vector << std::endl;
     return text_vector; // returns address of text vector (original storage that should be manipulated further)
 }
 
-int main() {
+void huffmanBinaryTreeBuilder(std::vector<huffmanNode>& input_vector, unsigned long *huffmanQueue) {
 
+    // Push items from input vector into priority queue
+    for(int i = 0; i < input_vector.size(); i++) {
+        *huffmanQueue.push(input_vector[i]);
+    }
+    
+    // create the left and right children
+    huffmanNode leftchild = huffmanQueue.top();
+    std::cout << "huffman Queue top " << huffmanQueue.top().key << " " << huffmanQueue.top().weight << std::endl;
+    std::cout << "left child " << leftchild.key << " " << leftchild.weight << std::endl;
+    huffmanQueue.pop();
+    huffmanNode rightchild = huffmanQueue.top();
+    std::cout << "huffman Queue top " << huffmanQueue.top().key << " " << huffmanQueue.top().weight << std::endl;
+    std::cout << "right child " << rightchild.key << " " << rightchild.weight << std::endl;
+    huffmanQueue.pop();
+
+    // create parent node
+    huffmanNode parent_node = {0, leftchild.weight + rightchild.weight, NULL, &leftchild, &rightchild};
+    std::cout << "Parent information: " << parent_node.weight << std::endl;
+
+    // add parent node to priority queue, requirement for huffman coding
+    huffmanQueue.push(parent_node);
+
+    // print the queue
+    std::cout << "huffmanQueue" << std::endl;
+    while(huffmanQueue.size() != 0) {
+        std::cout << huffmanQueue.top().key << " " << huffmanQueue.top().weight << std::endl;
+        huffmanQueue.pop();
+    }
+
+    return;
+}
+
+int main() {
+    
     std::vector<huffmanNode> inputVector;
     std::priority_queue huffmanQueue(inputVector.begin(), inputVector.end(), queueCompareFunct);
 
     // Create Frequency Table, this will be the input to our Huffman binary tree generator
-    inputVector = freqTableGen(true);
+    inputVector = freqTableGen(false);
 
-    // Push items from input vector into priority queue
-    for(int i = 0; i < inputVector.size(); i++) {
-        huffmanQueue.push(inputVector[i]);
-    }
-
-    
-
-    // // Print vector and queue, compare
-    // std::cout << "inputVector" << std::endl;
-    // printVector(inputVector);
-
-    // std::cout << "huffmanQueue" << std::endl;
-    // while(huffmanQueue.size() != 0) {
-    //     std::cout << huffmanQueue.top().key << " " << huffmanQueue.top().weight << std::endl;
-    //     huffmanQueue.pop();
-    // }
-
+    // Generate Huffman binary tree
+    huffmanBinaryTreeBuilder(inputVector, &huffmanQueue);
 
     // // Sort Vector using Count as criteria, a requirement for Huffman coding
     // std::sort(inputVector.begin(), inputVector.end(), mysortfunction);
