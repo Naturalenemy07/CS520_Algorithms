@@ -8,7 +8,6 @@
 struct huffmanNode {
     char key;
     int weight;
-    huffmanNode* parent;
     huffmanNode* left_child;
     huffmanNode* right_child;
 };
@@ -21,6 +20,19 @@ struct {
     }
 } queueCompareFunct;
 
+void printEncoding(huffmanNode& input_node, std::string code) {
+    if(&input_node == NULL) {
+        return;
+    }
+
+    if(input_node.key == 0) {
+        std::cout << input_node.key << " " << code << std::endl;
+    }
+
+    printEncoding(*input_node.left_child, code + "0");
+    printEncoding(*input_node.right_child, code + "1");
+}
+
 void emptyVector(std::vector<huffmanNode>& input_vector, int size) {
     /**
      * Inputs: vector of structures (huffmanNodes), and integer that designates size of vector
@@ -31,6 +43,8 @@ void emptyVector(std::vector<huffmanNode>& input_vector, int size) {
     huffmanNode empty_char;
     empty_char.key = 0;
     empty_char.weight = 0;
+    empty_char.left_child = NULL;
+    empty_char.right_child = NULL;
     for (int i = 0; i < size; i++) {
         empty_char.key = i;
         input_vector.push_back(empty_char);
@@ -59,13 +73,23 @@ void cleanVector(std::vector<huffmanNode>& input_vector) {
      * Function: Cleans up the vector, removes all unneeded characters(no EOF or '/n' detected)
     */
 
-   // delete all elements prior to 33 (before "!" in ascii)
-   input_vector.erase(input_vector.begin(), input_vector.begin()+33);
-   input_vector.erase(input_vector.begin()+1, input_vector.begin()+12);
+    // delete all elements prior to 33 (before "!" in ascii)
+    input_vector.erase(input_vector.begin(), input_vector.begin()+33);
+    input_vector.erase(input_vector.begin()+1, input_vector.begin()+12);
 
-   //delete everything except for lower case letters and "space"
-   input_vector.erase(input_vector.begin()+3, input_vector.begin()+53);
-   return;
+    //delete everything except for lower case letters and "space"
+    input_vector.erase(input_vector.begin()+3, input_vector.begin()+53);
+
+    //delete everything that has a frequency of zero, need to copy vector since cannot operate on same vector in loop
+    std::vector<huffmanNode> input_vector_copy = input_vector;
+    int size = input_vector.size();
+    for(int i = size; i > 0; i--) {
+        if(input_vector_copy[i].weight == 0) {
+            input_vector.erase(input_vector.begin() + i);
+        }
+    }
+
+    return;
 }
 
 std::vector<huffmanNode> freqTableGen(bool print_table = true){
@@ -110,51 +134,39 @@ std::vector<huffmanNode> freqTableGen(bool print_table = true){
     return text_vector; // returns address of text vector (original storage that should be manipulated further)
 }
 
-void huffmanBinaryTreeBuilder(std::vector<huffmanNode>& input_vector, unsigned long *huffmanQueue) {
-
-    // Push items from input vector into priority queue
-    for(int i = 0; i < input_vector.size(); i++) {
-        *huffmanQueue.push(input_vector[i]);
-    }
-    
-    // create the left and right children
-    huffmanNode leftchild = huffmanQueue.top();
-    std::cout << "huffman Queue top " << huffmanQueue.top().key << " " << huffmanQueue.top().weight << std::endl;
-    std::cout << "left child " << leftchild.key << " " << leftchild.weight << std::endl;
-    huffmanQueue.pop();
-    huffmanNode rightchild = huffmanQueue.top();
-    std::cout << "huffman Queue top " << huffmanQueue.top().key << " " << huffmanQueue.top().weight << std::endl;
-    std::cout << "right child " << rightchild.key << " " << rightchild.weight << std::endl;
-    huffmanQueue.pop();
-
-    // create parent node
-    huffmanNode parent_node = {0, leftchild.weight + rightchild.weight, NULL, &leftchild, &rightchild};
-    std::cout << "Parent information: " << parent_node.weight << std::endl;
-
-    // add parent node to priority queue, requirement for huffman coding
-    huffmanQueue.push(parent_node);
-
-    // print the queue
-    std::cout << "huffmanQueue" << std::endl;
-    while(huffmanQueue.size() != 0) {
-        std::cout << huffmanQueue.top().key << " " << huffmanQueue.top().weight << std::endl;
-        huffmanQueue.pop();
-    }
-
-    return;
-}
-
 int main() {
     
     std::vector<huffmanNode> inputVector;
     std::priority_queue huffmanQueue(inputVector.begin(), inputVector.end(), queueCompareFunct);
 
     // Create Frequency Table, this will be the input to our Huffman binary tree generator
-    inputVector = freqTableGen(false);
+    inputVector = freqTableGen(true);
 
-    // Generate Huffman binary tree
-    huffmanBinaryTreeBuilder(inputVector, &huffmanQueue);
+    // Push items from input vector into priority queue (these are the leaf nodes)
+    for(int i = 0; i < inputVector.size(); i++) {
+        huffmanQueue.push(inputVector[i]);
+    }
 
-    // // Sort Vector using Count as criteria, a requirement for Huffman coding
-    // std::sort(inputVector.begin(), inputVector.end(), mysortfunction);
+    // The while loop creates the huffman binary tree using a priority queue.  The remaining node in the 
+    // queue is the root node of the tree.  
+    while(huffmanQueue.size() > 1) {
+        // create the left and right children
+        huffmanNode *leftchild = new huffmanNode;
+        *leftchild = huffmanQueue.top();
+        huffmanQueue.pop();
+        huffmanNode *rightchild = new huffmanNode;
+        *rightchild = huffmanQueue.top();
+        huffmanQueue.pop();
+
+        // create parent node
+        int weight = leftchild->weight + rightchild->weight;
+        huffmanNode parent_node = {0, weight, leftchild, rightchild};
+
+        // add parent node to priority queue, requirement for huffman coding
+        huffmanQueue.push(parent_node);
+    }
+    std::cout << "Done" << std::endl;
+
+    // Print out encoding
+    printEncoding(&root_node, "");
 }
