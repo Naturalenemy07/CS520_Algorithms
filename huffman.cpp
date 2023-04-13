@@ -8,6 +8,7 @@
 struct huffmanNode {
     char key;
     int weight;
+    std::string binaryrep;
     huffmanNode* left_child;
     huffmanNode* right_child;
 };
@@ -20,17 +21,22 @@ struct {
     }
 } queueCompareFunct;
 
-void printEncoding(huffmanNode &input_node, std::string code) {
+void encoding(huffmanNode &input_node, std::vector<huffmanNode>& input_vector, std::string code) {
     if(&input_node == NULL) {
         return;
     }
 
     if(input_node.key != 0) {
-        std::cout << input_node.key << " " << code << std::endl;
+        // std::cout << input_node.key << " " << code << std::endl;
+        for(int i = 0; i < input_vector.size(); i++) {
+            if(input_node.key == input_vector[i].key) {
+                input_vector[i].binaryrep = code;
+            }
+        }
     }
 
-    printEncoding(*input_node.left_child, code + "0");
-    printEncoding(*input_node.right_child, code + "1");
+    encoding(*input_node.left_child, input_vector, code + "0");
+    encoding(*input_node.right_child, input_vector, code + "1");
 }
 
 void emptyVector(std::vector<huffmanNode>& input_vector, int size) {
@@ -43,6 +49,7 @@ void emptyVector(std::vector<huffmanNode>& input_vector, int size) {
     huffmanNode empty_char;
     empty_char.key = 0;
     empty_char.weight = 0;
+    empty_char.binaryrep = "";
     empty_char.left_child = NULL;
     empty_char.right_child = NULL;
     for (int i = 0; i < size; i++) {
@@ -52,16 +59,23 @@ void emptyVector(std::vector<huffmanNode>& input_vector, int size) {
     return;
 }
 
-void printVector(std::vector<huffmanNode>& input_vector) {
+void printVector(std::vector<huffmanNode>& input_vector, bool print_freq = true, bool print_binary = true) {
     /**
      * Input: vector of structures (huffmanNodes)
      * Output: None
-     * Function: prints out vector contents
+     * Function: prints out vector contents based on input
     */
 
     int len = input_vector.size();
-    for (int j = 0; j < len; j++) {
-        std::cout << input_vector[j].key << "  " << input_vector[j].weight << std::endl;
+    if(print_freq == true) {
+        for (int j = 0; j < len; j++) {
+            std::cout << input_vector[j].key << "  " << input_vector[j].weight << std::endl;
+        }
+    }
+    if(print_binary == true) {
+        for (int j = 0; j < len; j++) {
+            std::cout << input_vector[j].key << "  " << input_vector[j].binaryrep << std::endl;
+        }
     }
     return;
 }
@@ -140,7 +154,7 @@ int main() {
     std::priority_queue huffmanQueue(inputVector.begin(), inputVector.end(), queueCompareFunct);
 
     // Create Frequency Table, this will be the input to our Huffman binary tree generator
-    inputVector = freqTableGen(true);
+    inputVector = freqTableGen(false);
 
     // Push items from input vector into priority queue (these are the leaf nodes)
     for(int i = 0; i < inputVector.size(); i++) {
@@ -160,16 +174,18 @@ int main() {
 
         // create parent node
         int weight = leftchild->weight + rightchild->weight;
-        huffmanNode parent_node = {0, weight, leftchild, rightchild};
+        huffmanNode parent_node = {0, weight, "", leftchild, rightchild};
 
         // add parent node to priority queue, requirement for huffman coding
         huffmanQueue.push(parent_node);
     }
-    std::cout << "Done" << std::endl;
 
+    // Need to create a new node to pass into encoding function, requires the memory address
     huffmanNode *root_node = new huffmanNode;
     *root_node = huffmanQueue.top();
 
     // Print out encoding
-    printEncoding(*root_node, "");
+    encoding(*root_node, inputVector, "");
+    std::cout << "Generated Binary encoding using Huffman Coding" << std::endl;
+    printVector(inputVector, false, true);
 }
