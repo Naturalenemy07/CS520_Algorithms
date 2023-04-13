@@ -1,3 +1,9 @@
+// John Caruthers
+// 13Apr23
+// Hood College 
+// CS520 Algorithms, Spring 2023
+// Assignment 4.2
+
 #include <iostream>
 #include <fstream>
 #include <string>
