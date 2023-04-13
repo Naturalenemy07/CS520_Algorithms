@@ -20,12 +20,12 @@ struct {
     }
 } queueCompareFunct;
 
-void printEncoding(huffmanNode& input_node, std::string code) {
+void printEncoding(huffmanNode &input_node, std::string code) {
     if(&input_node == NULL) {
         return;
     }
 
-    if(input_node.key == 0) {
+    if(input_node.key != 0) {
         std::cout << input_node.key << " " << code << std::endl;
     }
 
@@ -167,6 +167,9 @@ int main() {
     }
     std::cout << "Done" << std::endl;
 
+    huffmanNode *root_node = new huffmanNode;
+    *root_node = huffmanQueue.top();
+
     // Print out encoding
-    printEncoding(&root_node, "");
+    printEncoding(*root_node, "");
 }
