@@ -22,6 +22,12 @@ struct {
 } queueCompareFunct;
 
 void encoding(huffmanNode &input_node, std::vector<huffmanNode>& input_vector, std::string code) {
+    /**
+     * Inputs: Root node (from binary tree), input vector, and code
+     * Outputs: None
+     * Function: Recursively goes through binary tree tracking left and right movements (0 for left, 1 for right)
+     * Function(2): Once reaches leaf node, will search through input vector and update the binary encoding 
+    */
     if(&input_node == NULL) {
         return;
     }
@@ -63,7 +69,7 @@ void printVector(std::vector<huffmanNode>& input_vector, bool print_freq = true,
     /**
      * Input: vector of structures (huffmanNodes)
      * Output: None
-     * Function: prints out vector contents based on input
+     * Function: prints out vector contents based on input(either frequency or binary encoding)
     */
 
     int len = input_vector.size();
@@ -149,11 +155,10 @@ std::vector<huffmanNode> freqTableGen(bool print_table = true){
 }
 
 int main() {
-    
     std::vector<huffmanNode> inputVector;
     std::priority_queue huffmanQueue(inputVector.begin(), inputVector.end(), queueCompareFunct);
 
-    // Create Frequency Table, this will be the input to our Huffman binary tree generator
+    // Create Frequency Table, this vector will be the input to our Huffman binary tree generator, and store the binary encoding
     inputVector = freqTableGen(false);
 
     // Push items from input vector into priority queue (these are the leaf nodes)
@@ -161,10 +166,9 @@ int main() {
         huffmanQueue.push(inputVector[i]);
     }
 
-    // The while loop creates the huffman binary tree using a priority queue.  The remaining node in the 
-    // queue is the root node of the tree.  
+    // The while loop creates the huffman binary tree using a priority queue.  The remaining node in the queue is the root node of the tree.  
     while(huffmanQueue.size() > 1) {
-        // create the left and right children
+        // create the left and right children, need to ensure a new memory location for each node
         huffmanNode *leftchild = new huffmanNode;
         *leftchild = huffmanQueue.top();
         huffmanQueue.pop();
