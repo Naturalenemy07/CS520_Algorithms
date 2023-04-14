@@ -99,12 +99,11 @@ void cleanVector(std::vector<huffmanNode>& input_vector) {
      * Function: Cleans up the vector, removes all unneeded characters(no EOF or '/n' detected)
     */
 
-    // delete all elements prior to 33 (before "!" in ascii)
-    input_vector.erase(input_vector.begin(), input_vector.begin()+33);
-    input_vector.erase(input_vector.begin()+1, input_vector.begin()+12);
+    // delete all elements prior to 45 (before "-" in ascii)
+    input_vector.erase(input_vector.begin(), input_vector.begin()+45);
 
     //delete everything except for lower case letters and "space"
-    input_vector.erase(input_vector.begin()+3, input_vector.begin()+53);
+    input_vector.erase(input_vector.begin()+2, input_vector.begin()+51); //3, 53
 
     //delete everything that has a frequency of zero, need to copy vector since cannot operate on same vector in loop
     std::vector<huffmanNode> input_vector_copy = input_vector;
@@ -118,7 +117,7 @@ void cleanVector(std::vector<huffmanNode>& input_vector) {
     return;
 }
 
-std::vector<huffmanNode> freqTableGen(bool print_table = true){
+std::vector<huffmanNode> freqTableGen(std::vector<char>& char_data, bool print_table = true){
     /**
      * Input: None
      * Output: returns frequency table as a vector of huffmanNodes structures
@@ -144,8 +143,10 @@ std::vector<huffmanNode> freqTableGen(bool print_table = true){
         // If space detected, will add to "-" (45 in ascii)
         if (text_vector[char_from_file].key == 32) {
             text_vector[45].weight++;
+            char_data.push_back(45);
         } else { 
             text_vector[char_from_file].weight++;
+            char_data.push_back(char_from_file);
         }
     }
 
@@ -162,10 +163,11 @@ std::vector<huffmanNode> freqTableGen(bool print_table = true){
 
 int main() {
     std::vector<huffmanNode> inputVector;
+    std::vector<char> charseq;
     std::priority_queue huffmanQueue(inputVector.begin(), inputVector.end(), queueCompareFunct);
 
     // Create Frequency Table, this vector will be the input to our Huffman binary tree generator, and store the binary encoding
-    inputVector = freqTableGen(false);
+    inputVector = freqTableGen(charseq, false);
 
     // Push items from input vector into priority queue (these are the leaf nodes)
     for(int i = 0; i < inputVector.size(); i++) {
@@ -198,4 +200,14 @@ int main() {
     encoding(*root_node, inputVector, "");
     std::cout << "Generated Binary encoding using Huffman Coding" << std::endl;
     printVector(inputVector, false, true);
+
+    // Print out file encoding
+    std::cout << "Converted file to binary: " << std::endl;
+    for(int i = 0; i < charseq.size(); i++) {
+        for(int j = 0; j < inputVector.size(); j++) {
+            if(inputVector[j].key == charseq[i]) {
+                std::cout << inputVector[j].binaryrep;
+            }
+        }
+    }
 }
