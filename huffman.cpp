@@ -1,8 +1,8 @@
 // John Caruthers
-// 13Apr23
+// 15Apr23
 // Hood College 
 // CS520 Algorithms, Spring 2023
-// Assignment 4.2
+// Assignment 4.3
 
 #include <iostream>
 #include <fstream>
@@ -201,7 +201,9 @@ int main() {
     std::cout << "Generated Binary encoding using Huffman Coding" << std::endl;
     printVector(inputVector, false, true);
 
-    // Print out file encoding
+    // Print out the input file in binary using the huffman compression algorithm (table lookup)
+    // This algorithm at first doesn't seem efficient, it seems to be O(n^2).Considering we are only looking at 26 letters + 2 special characters
+    // you could state worst case if 28*n (n being length of input file) or removing the constant O(n).  
     std::cout << "Converted file to binary: " << std::endl;
     for(int i = 0; i < charseq.size(); i++) {
         for(int j = 0; j < inputVector.size(); j++) {
