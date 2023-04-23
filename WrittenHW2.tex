@@ -47,7 +47,13 @@
         a$\,\to\,$b$\,\to\,$d$\,\to\,$c$\,\to\,$e
         
         \item[b)] Show the order of nodes visited with \textbf{depth first search} algorithm, starting at vertex \emph{a}.
-        \item[c)] Show the topological sort result.
+
+        a$\,\to\,$e$\,\to\,$d$\,\to\,$c$\,\to\,$b
+        
+        \item[c)] Show the \textbf{topological sort} result.
+
+        a$\,\to\,$c$\,\to\,$b$\,\to\,$d$\,\to\,$e
+        
     \end{itemize}
     \item[2.] Show the step-by-step result of growth of the minimum spanning tree when the following algorithms are performed on the graph below.
     \begin{center}
@@ -72,8 +78,190 @@
         \end{tikzpicture}
     \end{center}
     \begin{itemize}
+
+    \newpage
+    
         \item[a)] Kruskal's algorithm.
-        \item[b)] Prim's algorithm (indicate starting node).
+        \begin{center}
+            \begin{tikzpicture}
+                [dot/.style = {minimum size = 0.7cm, draw, fill=gray!20, circle}]
+    
+                \node[dot] (f) at (0,0) {$f$};
+                \node[dot] (c) at (0,-1.5) {$c$};
+                \node[dot] (e) at (0,-3) {$e$};
+                \node[dot] (b) at (-1.5,-1.5) {$b$};
+                \node[dot] (d) at (1.5,-1.5) {$d$};
+    
+                \draw[-] (c) to node[right] {2} (f);
+                \draw[-] (c) to node[below] {3} (d);
+                \draw[-] (c) to node[left] {1} (e);
+                \draw[-] (c) to node[above] {5} (b);
+                \draw[-,line width=3pt,color=blue] (b) to node[above left] {1} (f);
+                \draw[-] (b) to node[below left] {9} (e);
+                \draw[-] (d) to node[above right] {7} (f);
+                \draw[-] (d) to node[below right] {14} (e);
+                
+            \end{tikzpicture}
+        \end{center}
+
+        \begin{center}
+            \begin{tikzpicture}
+                [dot/.style = {minimum size = 0.7cm, draw, fill=gray!20, circle}]
+    
+                \node[dot] (f) at (0,0) {$f$};
+                \node[dot] (c) at (0,-1.5) {$c$};
+                \node[dot] (e) at (0,-3) {$e$};
+                \node[dot] (b) at (-1.5,-1.5) {$b$};
+                \node[dot] (d) at (1.5,-1.5) {$d$};
+    
+                \draw[-] (c) to node[right] {2} (f);
+                \draw[-] (c) to node[below] {3} (d);
+                \draw[-,line width=3pt,color=blue] (c) to node[left] {1} (e);
+                \draw[-] (c) to node[above] {5} (b);
+                \draw[-,line width=3pt,color=blue] (b) to node[above left] {1} (f);
+                \draw[-] (b) to node[below left] {9} (e);
+                \draw[-] (d) to node[above right] {7} (f);
+                \draw[-] (d) to node[below right] {14} (e);
+                
+            \end{tikzpicture}
+        \end{center}
+
+        \begin{center}
+            \begin{tikzpicture}
+                [dot/.style = {minimum size = 0.7cm, draw, fill=gray!20, circle}]
+    
+                \node[dot] (f) at (0,0) {$f$};
+                \node[dot] (c) at (0,-1.5) {$c$};
+                \node[dot] (e) at (0,-3) {$e$};
+                \node[dot] (b) at (-1.5,-1.5) {$b$};
+                \node[dot] (d) at (1.5,-1.5) {$d$};
+    
+                \draw[-,line width=3pt,color=blue] (c) to node[right] {2} (f);
+                \draw[-] (c) to node[below] {3} (d);
+                \draw[-,line width=3pt,color=blue] (c) to node[left] {1} (e);
+                \draw[-] (c) to node[above] {5} (b);
+                \draw[-,line width=3pt,color=blue] (b) to node[above left] {1} (f);
+                \draw[-] (b) to node[below left] {9} (e);
+                \draw[-] (d) to node[above right] {7} (f);
+                \draw[-] (d) to node[below right] {14} (e);
+                
+            \end{tikzpicture}
+        \end{center}
+
+        \begin{center}
+            \begin{tikzpicture}
+                [dot/.style = {minimum size = 0.7cm, draw, fill=gray!20, circle}]
+    
+                \node[dot] (f) at (0,0) {$f$};
+                \node[dot] (c) at (0,-1.5) {$c$};
+                \node[dot] (e) at (0,-3) {$e$};
+                \node[dot] (b) at (-1.5,-1.5) {$b$};
+                \node[dot] (d) at (1.5,-1.5) {$d$};
+    
+                \draw[-,line width=3pt,color=blue] (c) to node[right] {2} (f);
+                \draw[-,line width=3pt,color=blue] (c) to node[below] {3} (d);
+                \draw[-,line width=3pt,color=blue] (c) to node[left] {1} (e);
+                \draw[-] (c) to node[above] {5} (b);
+                \draw[-,line width=3pt,color=blue] (b) to node[above left] {1} (f);
+                \draw[-] (b) to node[below left] {9} (e);
+                \draw[-] (d) to node[above right] {7} (f);
+                \draw[-] (d) to node[below right] {14} (e);
+                
+            \end{tikzpicture}
+        \end{center}
+
+        \newpage
+        
+        \item[b)] Prim's algorithm (indicate starting node). \emph{starting node is {\color{purple}\textbf{d}}.}
+
+    \begin{center}
+        \begin{tikzpicture}
+            [dot/.style = {minimum size = 0.7cm, draw, fill=gray!20, circle}]
+
+            \node[dot] (f) at (0,0) {$f$};
+            \node[dot] (c) at (0,-1.5) {$c$};
+            \node[dot] (e) at (0,-3) {$e$};
+            \node[dot] (b) at (-1.5,-1.5) {$b$};
+            \node[dot] (d) at (1.5,-1.5) {$d$};
+
+            \draw[-] (c) to node[right] {2} (f);
+            \draw[-,line width=3pt, color=purple] (c) to node[below] {3} (d);
+            \draw[-] (c) to node[left] {1} (e);
+            \draw[-] (c) to node[above] {5} (b);
+            \draw[-] (b) to node[above left] {1} (f);
+            \draw[-] (b) to node[below left] {9} (e);
+            \draw[-] (d) to node[above right] {7} (f);
+            \draw[-] (d) to node[below right] {14} (e);
+            
+        \end{tikzpicture}
+    \end{center}
+
+    \begin{center}
+        \begin{tikzpicture}
+            [dot/.style = {minimum size = 0.7cm, draw, fill=gray!20, circle}]
+
+            \node[dot] (f) at (0,0) {$f$};
+            \node[dot] (c) at (0,-1.5) {$c$};
+            \node[dot] (e) at (0,-3) {$e$};
+            \node[dot] (b) at (-1.5,-1.5) {$b$};
+            \node[dot] (d) at (1.5,-1.5) {$d$};
+
+            \draw[-] (c) to node[right] {2} (f);
+            \draw[-,line width=3pt, color=purple] (c) to node[below] {3} (d);
+            \draw[-,line width=3pt, color=purple] (c) to node[left] {1} (e);
+            \draw[-] (c) to node[above] {5} (b);
+            \draw[-] (b) to node[above left] {1} (f);
+            \draw[-] (b) to node[below left] {9} (e);
+            \draw[-] (d) to node[above right] {7} (f);
+            \draw[-] (d) to node[below right] {14} (e);
+            
+        \end{tikzpicture}
+    \end{center}
+
+    \begin{center}
+        \begin{tikzpicture}
+            [dot/.style = {minimum size = 0.7cm, draw, fill=gray!20, circle}]
+
+            \node[dot] (f) at (0,0) {$f$};
+            \node[dot] (c) at (0,-1.5) {$c$};
+            \node[dot] (e) at (0,-3) {$e$};
+            \node[dot] (b) at (-1.5,-1.5) {$b$};
+            \node[dot] (d) at (1.5,-1.5) {$d$};
+
+            \draw[-,line width=3pt, color=purple] (c) to node[right] {2} (f);
+            \draw[-,line width=3pt, color=purple] (c) to node[below] {3} (d);
+            \draw[-,line width=3pt, color=purple] (c) to node[left] {1} (e);
+            \draw[-] (c) to node[above] {5} (b);
+            \draw[-] (b) to node[above left] {1} (f);
+            \draw[-] (b) to node[below left] {9} (e);
+            \draw[-] (d) to node[above right] {7} (f);
+            \draw[-] (d) to node[below right] {14} (e);
+            
+        \end{tikzpicture}
+    \end{center}
+
+    \begin{center}
+        \begin{tikzpicture}
+            [dot/.style = {minimum size = 0.7cm, draw, fill=gray!20, circle}]
+
+            \node[dot] (f) at (0,0) {$f$};
+            \node[dot] (c) at (0,-1.5) {$c$};
+            \node[dot] (e) at (0,-3) {$e$};
+            \node[dot] (b) at (-1.5,-1.5) {$b$};
+            \node[dot] (d) at (1.5,-1.5) {$d$};
+
+            \draw[-,line width=3pt, color=purple] (c) to node[right] {2} (f);
+            \draw[-,line width=3pt, color=purple] (c) to node[below] {3} (d);
+            \draw[-,line width=3pt, color=purple] (c) to node[left] {1} (e);
+            \draw[-] (c) to node[above] {5} (b);
+            \draw[-,line width=3pt, color=purple] (b) to node[above left] {1} (f);
+            \draw[-] (b) to node[below left] {9} (e);
+            \draw[-] (d) to node[above right] {7} (f);
+            \draw[-] (d) to node[below right] {14} (e);
+            
+        \end{tikzpicture}
+    \end{center}
+        
     \end{itemize}
 \end{itemize}
 
